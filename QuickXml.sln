@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickXml", "QuickXml\QuickXml.csproj", "{34B85A82-4B98-4553-BDB6-7B42BB48F433}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickXml.Tests", "QuickXml.Tests\QuickXml.Tests.csproj", "{CF4A2B72-82ED-4259-BBA2-6974AF05D78E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34B85A82-4B98-4553-BDB6-7B42BB48F433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B85A82-4B98-4553-BDB6-7B42BB48F433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B85A82-4B98-4553-BDB6-7B42BB48F433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B85A82-4B98-4553-BDB6-7B42BB48F433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF4A2B72-82ED-4259-BBA2-6974AF05D78E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF4A2B72-82ED-4259-BBA2-6974AF05D78E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF4A2B72-82ED-4259-BBA2-6974AF05D78E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF4A2B72-82ED-4259-BBA2-6974AF05D78E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
