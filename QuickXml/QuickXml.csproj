@@ -55,7 +55,7 @@
     <Compile Include="Speak\Item.cs" />
     <Compile Include="Speak\Node.cs" />
     <Compile Include="UnderTheHood\Result.cs" />
-    <Compile Include="UnderTheHood\XmlParseException.cs" />
+    <Compile Include="UnderTheHood\XmlParserException.cs" />
     <Compile Include="UnderTheHood\XmlParserResult.cs" />
     <Compile Include="UnderTheHood\XmlParserState.cs" />
     <Compile Include="XmlParserExtensions.cs" />

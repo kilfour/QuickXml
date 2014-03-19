@@ -13,7 +13,7 @@ namespace QuickXml
 			       	{
 			       		var result = xmlParser(s);
 						if(!result.WasSuccessFull)
-							throw new XmlParseException("Catastrophic Failure");
+							throw new XmlParserException("Catastrophic Failure");
 			       		return new XmlParserResult<TValueTwo>(selector(result.Value), s, result.WasSuccessFull);
 			       	};
 		}

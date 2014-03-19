@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Combining.cs" />
     <Compile Include="Example.cs" />
+    <Compile Include="ParserOrTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spike.cs" />
   </ItemGroup>

@@ -152,7 +152,7 @@ namespace QuickXml.Tests
 				from first in XmlParse.Child("first")
 				select first;
 
-			Assert.Throws<XmlParseException>(() => xmlParser.Parse(input));
+			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
 		}
 
 		[Fact]
@@ -164,7 +164,7 @@ namespace QuickXml.Tests
 				from first in XmlParse.Child("first").Content()
 				select first;
 
-			Assert.Throws<XmlParseException>(() => xmlParser.Parse(input));
+			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
 		}
 
 		[Fact]
@@ -228,7 +228,7 @@ namespace QuickXml.Tests
 				from first in XmlParse.Child("first").Content().Int()
 				select first;
 
-			Assert.Throws<XmlParseException>(() => xmlParser.Parse(input));
+			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
 		}
 
 		[Fact]
