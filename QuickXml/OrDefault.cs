@@ -6,16 +6,7 @@ namespace QuickXml
 	{
 		public static XmlParser<T> OrDefault<T>(this XmlParser<T> parser)
 		{
-			return
-				state =>
-				{
-					var result = parser(state);
-					if (result.WasSuccessFull)
-					{
-						return result;
-					}
-					return Result.Success(default(T), state);
-				};
+			return state => parser(state).WhenFailed(result => Result.Success(default(T), state));
 		}
 	}
 }

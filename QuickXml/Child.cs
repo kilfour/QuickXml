@@ -16,14 +16,9 @@ namespace QuickXml
 					};
 		}
 
-		public static XmlParser<XmlParseNode> Child(this XmlParser<XmlParseNode> xmlParser, string tagName)
+		public static XmlParser<XmlParseNode> Child(this XmlParser<XmlParseNode> parser, string tagName)
 		{
-			return
-				state =>
-					{
-						var result = xmlParser(state);
-						return result.WasSuccessFull ? result.Value.Child(tagName)(state) : Result.Failure<XmlParseNode>(state);
-					};
+			return state => parser(state).IfSuccessfull(result => result.Value.Child(tagName)(state));
 		}
 	}
 }

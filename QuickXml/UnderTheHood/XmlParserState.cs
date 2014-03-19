@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using QuickXml.Speak;
+﻿using System.Linq;
 using QuickXml.XmlStructure;
 
 namespace QuickXml.UnderTheHood
@@ -8,7 +6,6 @@ namespace QuickXml.UnderTheHood
 	public class XmlParserState
 	{
 		public Document Document { get; set; }
-		
 		public Node Current { get; set; }
 
 		public string CurrentChildTag { get; set; }

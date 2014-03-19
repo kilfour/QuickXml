@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using QuickXml.Speak;
-using QuickXml.UnderTheHood;
-using QuickXml.XmlStructure;
+﻿using QuickXml.UnderTheHood;
 
 namespace QuickXml
 {
@@ -9,16 +6,7 @@ namespace QuickXml
 	{
 		public static XmlParser<string> Content(this XmlParser<XmlParseNode> parser)
 		{
-			return
-				state =>
-					{
-						var result = parser(state);
-						if(result.WasSuccessFull)
-						{
-							return result.Value.GetContent(state);
-						}
-						return Result.Failure<string>(state);
-					};
+			return state => parser(state).IfSuccessfull(result => result.Value.GetContent(state));
 		}
 	}
 }

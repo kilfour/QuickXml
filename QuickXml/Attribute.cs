@@ -1,6 +1,4 @@
-﻿using QuickXml.Speak;
-using QuickXml.UnderTheHood;
-using QuickXml.XmlStructure;
+﻿using QuickXml.UnderTheHood;
 
 namespace QuickXml
 {
@@ -8,12 +6,7 @@ namespace QuickXml
 	{
 		public static XmlParser<string> Attribute(this XmlParser<XmlParseNode> parser, string attributeName)
 		{
-			return
-				state =>
-					{
-						var result = parser(state);
-						return result.Value.Attribute(attributeName)(state);
-					};
+			return state => parser(state).Value.Attribute(attributeName)(state);
 		}
 	}
 }

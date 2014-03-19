@@ -12,6 +12,7 @@
 		public T Value { get; private set; }
 		public XmlParserState State { get; private set; }
 		public bool WasSuccessFull { get; private set; }
+
 		public XmlParserResult(T value, XmlParserState state, bool success)
 		{
 			WasSuccessFull = success;

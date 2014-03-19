@@ -1,4 +1,5 @@
-﻿using QuickXml.UnderTheHood;
+﻿using System;
+using QuickXml.UnderTheHood;
 
 namespace QuickXml
 {
@@ -6,18 +7,13 @@ namespace QuickXml
 	{
 		public static XmlParser<int> Int(this XmlParser<string> parser)
 		{
-			return
-				state =>
-				{
-					var result = parser(state);
-					if (result.WasSuccessFull)
-					{
-						int value;
-						if (int.TryParse(result.Value, out value))
-							return Result.Success(value, state);
-					}
-					return Result.Failure<int>(state);
-				};
+			return state => parser(state).IfSuccessfull(result => TryParseInt(result, state));
+		}
+
+		private static IXmlParserResult<int> TryParseInt(IXmlParserResult<string> result, XmlParserState state)
+		{
+			int value;
+			return int.TryParse(result.Value, out value) ? Result.Success(value, state) : Result.Failure<int>(state);
 		}
 	}
 }

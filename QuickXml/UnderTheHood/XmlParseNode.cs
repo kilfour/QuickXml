@@ -28,14 +28,20 @@ namespace QuickXml.UnderTheHood
 			return Wrap(XmlParse.Child(tagName));
 		}
 
+		public virtual XmlParserResult<string> GetContent(XmlParserState state)
+		{
+			var content = ((Content) node.Children.Single()).Text;
+			return Result.Success(content, state);
+		}
+
 		public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
 		{
 			return
 				state =>
-					{
-						state.Current = node;
-						return parser(state);
-					};
+				{
+					state.Current = node;
+					return parser(state);
+				};
 		}
 
 		private XmlParser<T> Wrap<T>(XmlParser<T> parser)
@@ -46,12 +52,6 @@ namespace QuickXml.UnderTheHood
 					state.Current = node;
 					return parser(state);
 				};
-		}
-
-		public virtual XmlParserResult<string> GetContent(XmlParserState state)
-		{
-			var content = ((Content) node.Children.Single()).Text;
-			return Result.Success(content, state);
 		}
 	}
 }

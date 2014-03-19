@@ -6,18 +6,13 @@ namespace QuickXml
 	{
 		public static XmlParser<decimal> Decimal(this XmlParser<string> parser)
 		{
-			return
-				state =>
-				{
-					var result = parser(state);
-					if (result.WasSuccessFull)
-					{
-						decimal value;
-						if (decimal.TryParse(result.Value, out value))
-							return Result.Success(value, state);
-					}
-					return Result.Failure<decimal>(state);
-				};
+			return state => parser(state).IfSuccessfull(result => TryParseDecimal(result, state));
+		}
+
+		private static IXmlParserResult<decimal> TryParseDecimal(IXmlParserResult<string> result, XmlParserState state)
+		{
+			decimal value;
+			return decimal.TryParse(result.Value, out value) ? Result.Success(value, state) : Result.Failure<decimal>(state);
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using QuickXml.Speak;
-
-namespace QuickXml.XmlStructure
+﻿namespace QuickXml.XmlStructure
 {
 	public class Document
 	{
