@@ -36,12 +36,20 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content.cs" />
+    <Compile Include="Document.cs" />
+    <Compile Include="DocumentParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Item.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="XmlParseException.cs" />
+    <Compile Include="XmlParserResult.cs" />
     <Compile Include="XmlParserState.cs" />
-    <Compile Include="XmlResult.cs" />
-    <Compile Include="TagParser.cs" />
     <Compile Include="XmlParse.cs" />
     <Compile Include="XmlParserExtensions.cs" />
     <Compile Include="XmlParser.cs" />

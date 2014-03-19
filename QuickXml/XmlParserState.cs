@@ -1,42 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using Sprache;
+﻿using System.Linq;
 
 namespace QuickXml
 {
 	public class XmlParserState
 	{
-		public Stack<Func<Input, Input>> Stack { get; set; }
-		public Node CurrentNode { get; set; }
+		public Document Document { get; set; }
+		
+		public Node Current { get; set; }
 
-		public XmlParserState()
-		{
-			Stack = new Stack<Func<Input, Input>>();
-		}
+		public string CurrentChildTag { get; set; }
+		public int CurrentChildIndex { get; set; }
 
-		public void Push<T>(Parser<T> parser)
+		public bool NextChild(string tagName, out Node node)
 		{
-			Stack.Push(
-				i =>
-					{
-						var result = parser(i);
-						if (result.WasSuccessful)
-							return result.Remainder;
-						throw new ParseException(result.ToString());
-					});
-		}
+			if (tagName != CurrentChildTag)
+				CurrentChildIndex = 0;
 
-		public Input Pop(Input input)
-		{
-			var func = Stack.Pop();
-			var result = func(input);
-			return result;
-		}
+			CurrentChildTag = tagName;
 
-		public void End(Input input)
-		{
-			while (Stack.Count > 0)
-				input = Pop(input);
+			var children =
+				Current
+					.Children
+					.Where(c => c is Node)
+					.Cast<Node>()
+					.Where(n => n.Name == tagName);
+
+			if (children.Count() <= CurrentChildIndex)
+			{
+				node = null;
+				return false;
+			}
+
+			node = children.ElementAt(CurrentChildIndex);
+			CurrentChildIndex++;
+			return true;
 		}
 	}
 }

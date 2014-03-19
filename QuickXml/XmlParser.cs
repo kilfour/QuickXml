@@ -1,6 +1,4 @@
-﻿using Sprache;
-
-namespace QuickXml
+﻿namespace QuickXml
 {
-	public delegate IXmlResult<TOut> XmlParser<out TOut>(Input input, XmlParserState state);
+	public delegate XmlParserResult<T> XmlParser<T>(XmlParserState state);
 }

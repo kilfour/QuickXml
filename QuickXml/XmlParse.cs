@@ -1,177 +1,140 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Sprache;
 
 namespace QuickXml
 {
+
 	public static class XmlParse
 	{
-		public static XmlParser<Node> Into(string tagName)
+		public static XmlParser<Node> Root()
+		{
+			return state =>
+			       	{
+			       		state.Current = state.Document.Root;
+			       		return Result.Success(state.Current, state);
+			       	};
+		}
+
+		public static XmlParser<string> Attribute(this XmlParser<Node> parser, string attributeName)
 		{
 			return
-				(input, state) =>
+				state =>
 					{
-						var result = TagParser.StartTag(tagName)(input);
-						state.Push(TagParser.EndTag(tagName));
-						state.CurrentNode = result.Value;
-						return new XmlResult<Node>(result.Value, result.Remainder, result.WasSuccessful);
+						var result = parser(state);
+						return result.Value.Attribute(attributeName)(state);
 					};
 		}
-
-		public static XmlParser<string> Attribute(string attributeName)
+		public static XmlParser<Node> Child(string tagName)
 		{
 			return
-				(input, state) => 
-					new XmlResult<string>(
-						state.CurrentNode.StringOrDefault(attributeName), 
-						input, 
-						true);
-		}
-
-		public static XmlParser<object> Up()
-		{
-			return (input, state) => new XmlResult<object>(null, state.Pop(input), true);
+				state =>
+					{
+						Node child;
+						var hasChild = state.NextChild(tagName, out child);
+						if (hasChild)
+						{
+							//state.Current = child;
+							return Result.Success(child, state);
+						}
+						return Result.Failure<Node>(state);
+					};
 		}
 
 		public static XmlParser<string> Content(string tagName)
 		{
 			return
-				(input, state) =>
-					{
-						var result = TagParser.Content(tagName)(input);
-						if(result.WasSuccessful)
-							return new XmlResult<string>(result.Value, result.Remainder, result.WasSuccessful);
-						return new XmlResult<string>(null, result.Remainder, result.WasSuccessful);
-					};
+				state =>
+				{
+					Node child;
+					var hasChild = state.NextChild(tagName, out child);
+					if (hasChild)
+						return Result.Success(((Content)child.Children.Single()).Text, state);
+					return Result.Failure<string>(state);
+				};
 		}
 
-		public static XmlParser<T> Or<T>(this XmlParser<T> xmlParser, XmlParser<T> other)
+		public static XmlParser<string> Content(this XmlParser<Node> parser)
 		{
 			return
-				(input, state) =>
-				{
-					var result = xmlParser(input, state);
-					if(result.WasSuccessful)
-						return new XmlResult<T>(result.Value, result.Remainder, result.WasSuccessful);
-					result = other(input, state);
-					return new XmlResult<T>(result.Value, result.Remainder, result.WasSuccessful);
-				};
+				state =>
+					{
+						var result = parser(state);
+						if(result.WasSuccessFull)
+						{
+							var content = ((Content)result.Value.Children.Single()).Text;
+							return Result.Success(content, state);	
+						}
+						return Result.Failure<string>(state);
+					};
 		}
 
 		public static XmlParser<IEnumerable<T>> Many<T>(this XmlParser<T> parser)
 		{
-			return (input, state) =>
-			       	{
-			       		var innerInput = input;
-			       		var success = true;
-			       		var value = new List<T>();
-			       		IXmlResult<T> result = null;
-			       		while (success)
-			       		{
-			       			result = parser(innerInput, state);
-			       			if (result.WasSuccessful)
-			       			{
-			       				innerInput = result.Remainder;
-			       				value.Add(result.Value);
-			       			}
-			       			else
-			       				success = false;
-			       		}
-			       		return new XmlResult<IEnumerable<T>>(value, result.Remainder, true);
-			       	};
-		}
-
-		public static XmlParser<T> OrDefault<T>(this XmlParser<T> parser)
-		{
-			return (input, state) =>
+			return state =>
 			{
-				var result = parser(input, state);
-				if(result.WasSuccessful)
-					return new XmlResult<T>(result.Value, result.Remainder, result.WasSuccessful);
-				var parseResult = Parse.AnyChar.Except(Parse.Chars('>', '<', '/', '"')).Many()(input);
-				return new XmlResult<T>(default(T), parseResult.Remainder, true);
-			};
-		}
-
-		public static XmlParser<T> Or<T>(this XmlParser<T> parser, T value)
-		{
-			return (input, state) =>
-			{
-				var result = parser(input, state);
-				if (result.WasSuccessful)
-					return new XmlResult<T>(result.Value, result.Remainder, result.WasSuccessful);
-				var parseResult = Parse.AnyChar.Except(Parse.Chars('>', '<', '/', '"')).Many()(input);
-				return new XmlResult<T>(value, parseResult.Remainder, true);
+				var list = new List<T>();
+				var success = true;
+				while (success)
+				{
+					var result = parser(state);
+					list.Add(result.Value);
+					success = result.WasSuccessFull;
+				}
+				return Result.Success<IEnumerable<T>>(list, state);
 			};
 		}
 
 		public static XmlParser<int> Int(this XmlParser<string> parser)
 		{
-			return (input, state) =>
-			{
-				var result = parser(input, state);
-				if (result.WasSuccessful)
-				{
-					int i;
-					if(int.TryParse(result.Value, out i))
-						return new XmlResult<int>(i, result.Remainder, result.WasSuccessful);
-				}
-
-				return new XmlResult<int>(0, input, false);
-			};
-		}
-
-		public static XmlParser<Action<T>> Content<T>(string tagName, Action<T, string> action)
-		{
 			return
-				(input, state) =>
-				{
-					var result = TagParser.Content(tagName)(input);
-					return new XmlResult<Action<T>>(t => action(t, result.Value), result.Remainder, result.WasSuccessful);
-				};
-		}
-
-		public static XmlParser<T> Apply<T>(T value, params Action<T>[] actions)
-		{
-			return
-				(input, state) =>
-				{
-					foreach (var action in actions)
+				state =>
 					{
-						action(value);
-					}
-					return new XmlResult<T>(value, input, true);
-				};
-		}
-
-		public static XmlParser<T> Apply<T>(T value, params XmlParser<Action<T>>[] parsers)
-		{
-			return
-				(input, state) =>
-					{
-						var actions = parsers.Skip(1).Aggregate(parsers.First(), (current, parser1) => current.Or(parser1)).Many();
-						var result = actions(input, state);
-						foreach (var action in result.Value)
+						var result = parser(state);
+						if(result.WasSuccessFull)
 						{
-							action(value);
+							int value;
+							if (int.TryParse(result.Value, out value))
+								return Result.Success(value, state);
+							throw new XmlParseException(
+								string.Format(
+									"'{0}' is not an int.",
+									result.Value));
 						}
-						return new XmlResult<T>(value, result.Remainder, result.WasSuccessful);
+						return Result.Failure<int>(state);
 					};
 		}
 
-		public static XmlParser<T> InAnyOrder<T>(T value, params XmlParser<Action<T>>[] parsers)
+		public static XmlParser<decimal> Decimal(this XmlParser<string> parser)
 		{
 			return
-				(input, state) =>
+				state =>
 				{
-					var actions = parsers.Skip(1).Aggregate(parsers.First(), (current, parser1) => current.Or(parser1)).Many();
-					var result = actions(input, state);
-					foreach (var action in result.Value)
+					var result = parser(state);
+					if (result.WasSuccessFull)
 					{
-						action(value);
+						decimal value;
+						if (decimal.TryParse(result.Value, out value))
+							return Result.Success(value, state);
+						throw new XmlParseException(
+							string.Format(
+								"'{0}' is not a decimal.",
+								result.Value));
 					}
-					return new XmlResult<T>(value, input, true);
+					return Result.Failure<decimal>(state);
+				};
+		}
+
+		public static XmlParser<T> OrDefault<T>(this XmlParser<T> parser)
+		{
+			return
+				state =>
+				{
+					var result = parser(state);
+					if (result.WasSuccessFull)
+					{
+						return result;
+					}
+					return Result.Success(default(T), state);
 				};
 		}
 	}
