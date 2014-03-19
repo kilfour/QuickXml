@@ -1,6 +1,13 @@
 ﻿namespace QuickXml.UnderTheHood
 {
-	public class XmlParserResult<T>
+	public interface IXmlParserResult<out T>
+	{
+		T Value { get; }
+		XmlParserState State { get; }
+		bool WasSuccessFull { get; }
+	}
+
+	public class XmlParserResult<T> : IXmlParserResult<T>
 	{
 		public T Value { get; private set; }
 		public XmlParserState State { get; private set; }
@@ -10,19 +17,6 @@
 			WasSuccessFull = success;
 			Value = value;
 			State = state;
-		}
-	}
-
-	public static class Result
-	{
-		public static XmlParserResult<T> Success<T>(T value, XmlParserState state)
-		{
-			return new XmlParserResult<T>(value, state, true);
-		}
-
-		public static XmlParserResult<T> Failure<T>(XmlParserState state)
-		{
-			return new XmlParserResult<T>(default(T), state, false);
 		}
 	}
 }

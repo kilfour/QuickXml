@@ -2,5 +2,5 @@
 
 namespace QuickXml
 {
-	public delegate XmlParserResult<T> XmlParser<T>(XmlParserState state);
+	public delegate IXmlParserResult<T> XmlParser<out T>(XmlParserState state);
 }
