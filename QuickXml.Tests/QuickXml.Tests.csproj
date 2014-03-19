@@ -39,6 +39,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChildTests.cs" />
     <Compile Include="Combining.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ParserOrTests.cs" />

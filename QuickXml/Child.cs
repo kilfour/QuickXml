@@ -12,9 +12,17 @@ namespace QuickXml
 					{
 						Node child;
 						var hasChild = state.NextChild(tagName, out child);
-						if (hasChild)
-							return Result.Success(child, state);
-						return Result.Failure<Node>(state);
+						return hasChild ? Result.Success(child, state) : Result.Failure<Node>(state);
+					};
+		}
+
+		public static XmlParser<Node> Child(this XmlParser<Node> xmlParser, string tagName)
+		{
+			return
+				state =>
+					{
+						var result = xmlParser(state);
+						return result.WasSuccessFull ? result.Value.Child(tagName)(state) : Result.Failure<Node>(state);
 					};
 		}
 	}
