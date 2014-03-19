@@ -1,4 +1,5 @@
-﻿using QuickXml.UnderTheHood;
+﻿using System.Linq;
+using QuickXml.UnderTheHood;
 using Xunit;
 
 namespace QuickXml.Tests
@@ -55,6 +56,21 @@ namespace QuickXml.Tests
 				from aha in root.Apply(XmlParse.Child("aha"))
 				from second in aha.Apply(parserTwo)
 				select new[] { first, second };
+
+			var result = parser.Parse(input);
+
+			Assert.Equal("test", result[0]);
+			Assert.Equal("test again", result[1]);
+		}
+
+		[Fact]
+		public void WithAMany()
+		{
+			const string input = "<root><first>test</first><first>test again</first></root>";
+			var parser =
+				from root in XmlParse.Root()
+				from first in root.Apply(parserOne.Many())
+				select first.ToArray();
 
 			var result = parser.Parse(input);
 

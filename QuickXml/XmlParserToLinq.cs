@@ -13,7 +13,7 @@ namespace QuickXml
 			return state =>
 			       	{
 			       		var result = xmlParser(state);
-						if (!result.WasSuccessFull)
+						if (!result.WasSuccessFull && !state.DontThrowFailures)
 						{
 							if (state.UseNullNode)
 							{
@@ -37,7 +37,7 @@ namespace QuickXml
 			return state =>
 			       	{
 			       		var result = xmlParser(state);
-						if (!result.WasSuccessFull)
+						if (!result.WasSuccessFull && !state.DontThrowFailures)
 						{
 							if(state.UseNullNode)
 							{

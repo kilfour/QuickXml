@@ -11,12 +11,14 @@ namespace QuickXml
 			{
 				var list = new List<T>();
 				var success = true;
+				state.DontThrowFailures = true;
 				while (success)
 				{
 					var result = parser(state);
 					list.Add(result.Value);
 					success = result.WasSuccessFull;
 				}
+				state.DontThrowFailures = false;
 				return Result.Success<IEnumerable<T>>(list, state);
 			};
 		}

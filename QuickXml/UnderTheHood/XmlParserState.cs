@@ -14,6 +14,7 @@ namespace QuickXml.UnderTheHood
 		public int CurrentChildIndex { get; set; }
 
 		public bool UseNullNode { get; set; }
+		public bool DontThrowFailures { get; set; }
 
 		public bool NextChild(string tagName, out Node node)
 		{
