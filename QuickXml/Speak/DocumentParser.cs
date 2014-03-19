@@ -63,7 +63,7 @@ namespace QuickXml.Speak
 			from lt in Parse.Char('<')
 			from tag in Identifier
 			from attributes in Attribute.Or(SqAttribute).Many()
-			from slash in Parse.Char('/')
+			from slash in Parse.Char('/').Token()
 			from gt in Parse.Char('>').Token()
 			select new Node(attributes.ToDictionary(kv => kv.Key, kv => kv.Value)) { Name = tag };
 

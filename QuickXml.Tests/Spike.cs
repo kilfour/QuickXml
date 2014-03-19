@@ -144,6 +144,20 @@ namespace QuickXml.Tests
 		}
 
 		[Fact]
+		public void ShortNodeAttribute()
+		{
+			const string input = "<root anAttribute=\"test\" />";
+
+			var xmlParser =
+				from root in XmlParse.Root()
+				from attr in root.Attribute("anAttribute")
+				select attr;
+
+			var result = xmlParser.Parse(input);
+			Assert.Equal("test", result);
+		}
+
+		[Fact]
 		public void ChildFailureThrows()
 		{
 			const string input = "<root></root>";

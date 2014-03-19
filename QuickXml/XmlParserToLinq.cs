@@ -37,7 +37,7 @@ namespace QuickXml
 			return state =>
 			       	{
 			       		var result = xmlParser(state);
-						if (!result.WasSuccessFull && !state.DontThrowFailures)
+						if (!result.WasSuccessFull)
 						{
 							if(state.UseNullNode)
 							{
