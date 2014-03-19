@@ -205,22 +205,21 @@ namespace QuickXml.Tests
 			Assert.Equal("Test", result);
 		}
 
-		//[Fact]
-		//public void AsInt()
-		//{
-		//    const string input = "<root><first>42</first></root>";
+		[Fact]
+		public void ContentAsInt()
+		{
+			const string input = "<root><first>42</first></root>";
 
-		//    var xmlParser =
-		//        from root in XmlParse.Into("root")
-		//        from first in root.Content("first").Int()
-		//        select first;
+			var xmlParser =
+				from first in XmlParse.Child("first").Content().Int()
+				select first;
 
-		//    var result = xmlParser.Parse(input);
-		//    Assert.Equal(42, result);
-		//}
+			var result = xmlParser.Parse(input);
+			Assert.Equal(42, result);
+		}
 
 		[Fact]
-		public void AsIntFails()
+		public void ContentAsIntFails()
 		{
 			const string input = "<root><first>bla</first></root>";
 
@@ -231,32 +230,30 @@ namespace QuickXml.Tests
 			Assert.Throws<XmlParseException>(() => xmlParser.Parse(input));
 		}
 
-		//[Fact]
-		//public void AsIntOrDefault()
-		//{
-		//    const string input = "<root><first>bla</first></root>";
+		[Fact]
+		public void AsIntOrDefault()
+		{
+			const string input = "<root><first>bla</first></root>";
 
-		//    var xmlParser =
-		//        from root in XmlParse.Into("root")
-		//        from first in XmlParse.Content("first").Int().OrDefault()
-		//        select first;
+			var xmlParser =
+				from first in XmlParse.Child("first").Content().Int().OrDefault()
+				select first;
 
-		//    var result = xmlParser.Parse(input);
-		//    Assert.Equal(0, result);
-		//}
+			var result = xmlParser.Parse(input);
+			Assert.Equal(0, result);
+		}
 
-		//[Fact]
-		//public void AsIntOrValue()
-		//{
-		//    const string input = "<root><first>bla</first></root>";
+		[Fact]
+		public void AsIntOrValue()
+		{
+			const string input = "<root><first>bla</first></root>";
 
-		//    var xmlParser =
-		//        from root in XmlParse.Into("root")
-		//        from first in XmlParse.Content("first").Int().Or(42)
-		//        select first;
+			var xmlParser =
+				from first in XmlParse.Child("first").Content().Int().Or(42)
+				select first;
 
-		//    var result = xmlParser.Parse(input);
-		//    Assert.Equal(42, result);
-		//}
+			var result = xmlParser.Parse(input);
+			Assert.Equal(42, result);
+		}
 	}
 }

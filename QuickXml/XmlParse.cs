@@ -84,10 +84,6 @@ namespace QuickXml
 							int value;
 							if (int.TryParse(result.Value, out value))
 								return Result.Success(value, state);
-							throw new XmlParseException(
-								string.Format(
-									"'{0}' is not an int.",
-									result.Value));
 						}
 						return Result.Failure<int>(state);
 					};
@@ -104,10 +100,6 @@ namespace QuickXml
 						decimal value;
 						if (decimal.TryParse(result.Value, out value))
 							return Result.Success(value, state);
-						throw new XmlParseException(
-							string.Format(
-								"'{0}' is not a decimal.",
-								result.Value));
 					}
 					return Result.Failure<decimal>(state);
 				};

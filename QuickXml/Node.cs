@@ -20,19 +20,7 @@ namespace QuickXml
 			return Wrap(XmlParse.Child(tagName));
 		}
 
-		public XmlParser<string> Content(string tagName)
-		{
-			return
-				state =>
-				{
-					state.Current = this;
-					Node child;
-					var hasChild = state.NextChild(tagName, out child);
-					if (hasChild)
-						return Result.Success(((Content)child.Children.Single()).Text, state);
-					return Result.Failure<string>(state);
-				};
-		}
+
 
 		private XmlParser<T> Wrap<T>(XmlParser<T> parser)
 		{
