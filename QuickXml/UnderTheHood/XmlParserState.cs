@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using QuickXml.Speak;
 
-namespace QuickXml
+namespace QuickXml.UnderTheHood
 {
 	public class XmlParserState
 	{

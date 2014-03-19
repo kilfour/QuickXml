@@ -2,7 +2,7 @@
 using System.Linq;
 using Sprache;
 
-namespace QuickXml
+namespace QuickXml.Speak
 {
 	public static class DocumentParser
 	{

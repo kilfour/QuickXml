@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace QuickXml
+namespace QuickXml.UnderTheHood
 {
 	public class XmlParseException : Exception
 	{

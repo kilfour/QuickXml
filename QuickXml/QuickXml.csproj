@@ -36,21 +36,27 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Child.cs" />
     <Compile Include="Content.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="DocumentParser.cs">
+    <Compile Include="OrDefault.cs" />
+    <Compile Include="Or.cs" />
+    <Compile Include="Decimal.cs" />
+    <Compile Include="Many.cs" />
+    <Compile Include="Int.cs" />
+    <Compile Include="Attribute.cs" />
+    <Compile Include="Root.cs" />
+    <Compile Include="Speak\Content.cs" />
+    <Compile Include="Speak\Document.cs" />
+    <Compile Include="Speak\DocumentParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Item.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="XmlParseException.cs" />
-    <Compile Include="XmlParserResult.cs" />
-    <Compile Include="XmlParserState.cs" />
-    <Compile Include="XmlParse.cs" />
+    <Compile Include="Speak\Item.cs" />
+    <Compile Include="Speak\Node.cs" />
+    <Compile Include="UnderTheHood\XmlParseException.cs" />
+    <Compile Include="UnderTheHood\XmlParserResult.cs" />
+    <Compile Include="UnderTheHood\XmlParserState.cs" />
     <Compile Include="XmlParserExtensions.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

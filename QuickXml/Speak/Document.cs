@@ -1,4 +1,4 @@
-﻿namespace QuickXml
+﻿namespace QuickXml.Speak
 {
 	public class Document
 	{

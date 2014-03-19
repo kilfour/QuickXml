@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using QuickXml.UnderTheHood;
+using Xunit;
 
 namespace QuickXml.Tests
 {

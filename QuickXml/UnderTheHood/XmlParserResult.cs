@@ -1,4 +1,4 @@
-﻿namespace QuickXml
+﻿namespace QuickXml.UnderTheHood
 {
 	public class XmlParserResult<T>
 	{

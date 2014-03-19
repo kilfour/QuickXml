@@ -34,8 +34,6 @@
     <Reference Include="Sprache, Version=1.10.0.27, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit">
       <HintPath>..\Libs\xunit\xunit.dll</HintPath>
     </Reference>
