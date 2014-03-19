@@ -7,12 +7,12 @@ namespace QuickXml.Speak
 {
 	public static class DocumentParser
 	{
-		static readonly Parser<string> Identifier =
+		private static readonly Parser<string> Identifier =
 			from first in Parse.Letter.Once()
 			from rest in Parse.LetterOrDigit.XOr(Parse.Char('-')).XOr(Parse.Char('_')).Many()
 			select new string(first.Concat(rest).ToArray());
 
-		public static Parser<KeyValuePair<string, string>> Attribute(char quote)
+		private static Parser<KeyValuePair<string, string>> Attribute(char quote)
 		{
 			return
  				from attr in Identifier.Token()
@@ -23,8 +23,8 @@ namespace QuickXml.Speak
 				select new KeyValuePair<string, string>(attr, value);
 		}
 
-		public static Parser<KeyValuePair<string, string>> DoubleQuotedAttribute = Attribute('"');
-		public static Parser<KeyValuePair<string, string>> SingleQuotedAttribute = Attribute('\'');
+		private static readonly Parser<KeyValuePair<string, string>> DoubleQuotedAttribute = Attribute('"');
+		private static readonly Parser<KeyValuePair<string, string>> SingleQuotedAttribute = Attribute('\'');
 
 		private static readonly Parser<Dictionary<string, string>> Attributes =
 			from attributes in DoubleQuotedAttribute.Or(SingleQuotedAttribute).Many()

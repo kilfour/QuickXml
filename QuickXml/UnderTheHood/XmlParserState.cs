@@ -14,6 +14,12 @@ namespace QuickXml.UnderTheHood
 		public bool UseNullNode { get; set; }
 		public bool DontThrowFailures { get; set; }
 
+		public XmlParserState(Document document)
+		{
+			Document = document;
+			Current = document.Root;
+		}
+
 		public bool NextChild(string tagName, out Node node)
 		{
 			if (tagName != CurrentChildTag)

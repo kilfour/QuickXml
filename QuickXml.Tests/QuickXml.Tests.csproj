@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ChildTests.cs" />
     <Compile Include="Combining.cs" />
+    <Compile Include="CovariantResult.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ParserOrTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,6 +52,9 @@
       <Project>{34B85A82-4B98-4553-BDB6-7B42BB48F433}</Project>
       <Name>QuickXml</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Speak\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
