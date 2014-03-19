@@ -36,12 +36,7 @@ namespace QuickXml.UnderTheHood
 
 		public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
 		{
-			return
-				state =>
-				{
-					state.Current = node;
-					return parser(state);
-				};
+			return Wrap(parser);
 		}
 
 		private XmlParser<T> Wrap<T>(XmlParser<T> parser)
