@@ -3,11 +3,11 @@ using QuickXml.XmlStructure;
 
 namespace QuickXml.UnderTheHood
 {
-	public class XmlParseNode 
+	public class XmlParserNode 
 	{
 		private readonly Node node;
 
-		public XmlParseNode(Node node)
+		public XmlParserNode(Node node)
 		{
 			this.node = node;
 		}
@@ -23,7 +23,7 @@ namespace QuickXml.UnderTheHood
 				};
 		}
 
-		public virtual XmlParser<XmlParseNode> Child(string tagName)
+		public virtual XmlParser<XmlParserNode> Child(string tagName)
 		{
 			return Wrap(XmlParse.Child(tagName));
 		}

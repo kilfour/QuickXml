@@ -1,8 +1,8 @@
 ﻿namespace QuickXml.UnderTheHood
 {
-	public class XmlParseNullNode : XmlParseNode
+	public class XmlParserNullNode : XmlParserNode
 	{
-		public XmlParseNullNode() 
+		public XmlParserNullNode() 
 			: base(null) { }
 
 		public override XmlParser<string> Attribute(string attributeName)
@@ -10,7 +10,7 @@
 			return Result.Failure<string>;
 		}
 
-		public override XmlParser<XmlParseNode> Child(string tagName)
+		public override XmlParser<XmlParserNode> Child(string tagName)
 		{
 			return state => Result.Success(this, state);
 		}

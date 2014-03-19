@@ -47,9 +47,9 @@ namespace QuickXml
 			{
 				if (state.UseNullNode)
 				{
-					if (typeof(T) == typeof(XmlParseNode))
+					if (typeof(T) == typeof(XmlParserNode))
 					{
-						var value = ((T)((object)new XmlParseNullNode()));
+						var value = ((T)((object)new XmlParserNullNode()));
 						return value;
 					}
 				}

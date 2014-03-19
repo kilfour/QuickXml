@@ -48,7 +48,7 @@
     <Compile Include="Int.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="Root.cs" />
-    <Compile Include="UnderTheHood\XmlParseNode.cs" />
+    <Compile Include="UnderTheHood\XmlParserNode.cs" />
     <Compile Include="XmlStructure\Content.cs" />
     <Compile Include="XmlStructure\Document.cs" />
     <Compile Include="Speak\DocumentParser.cs">
@@ -56,7 +56,7 @@
     </Compile>
     <Compile Include="XmlStructure\Item.cs" />
     <Compile Include="XmlStructure\Node.cs" />
-    <Compile Include="UnderTheHood\XmlParseNullNode.cs" />
+    <Compile Include="UnderTheHood\XmlParserNullNode.cs" />
     <Compile Include="UnderTheHood\Result.cs" />
     <Compile Include="UnderTheHood\XmlParserException.cs" />
     <Compile Include="UnderTheHood\XmlParserResult.cs" />

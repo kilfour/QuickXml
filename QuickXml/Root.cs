@@ -4,13 +4,13 @@ namespace QuickXml
 {
 	public static partial class XmlParse
 	{
-		public static XmlParser<XmlParseNode> Root()
+		public static XmlParser<XmlParserNode> Root()
 		{
 			return
 				state =>
 					{
 						state.Current = state.Document.Root;
-						return Result.Success(new XmlParseNode(state.Current), state);
+						return Result.Success(new XmlParserNode(state.Current), state);
 					};
 		}
 	}
