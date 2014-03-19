@@ -11,36 +11,32 @@ namespace QuickXml.Speak
 			from rest in Parse.LetterOrDigit.XOr(Parse.Char('-')).XOr(Parse.Char('_')).Many()
 			select new string(first.Concat(rest).ToArray());
 
-		public static Parser<KeyValuePair<string, string>> Attribute =
-				from attr in Identifier.Token()
-				from eq in Parse.Char('=').Token()
-				from lq in Parse.Char('"')
-				from value in Parse.AnyChar.Except(Parse.Char('"')).Many().Text()
-				from rq in Parse.Char('"')
-				select new KeyValuePair<string, string>(attr, value);
-
-		public static Parser<KeyValuePair<string, string>> SqAttribute =
-				from attr in Identifier.Token()
-				from eq in Parse.Char('=').Token()
-				from lq in Parse.Char('\'')
-				from value in Parse.AnyChar.Except(Parse.Char('\'')).Many().Text()
-				from rq in Parse.Char('\'')
-				select new KeyValuePair<string, string>(attr, value);
-
-		static Parser<T> Tag<T>(Parser<T> content)
+		public static Parser<KeyValuePair<string, string>> Attribute(char quote)
 		{
-			return from lt in Parse.Char('<')
-				   from t in content
-				   from gt in Parse.Char('>').Token()
-				   select t;
+			return
+ 				from attr in Identifier.Token()
+				from eq in Parse.Char('=').Token()
+				from lq in Parse.Char(quote)
+				from value in Parse.AnyChar.Except(Parse.Char(quote)).Many().Text()
+				from rq in Parse.Char(quote)
+				select new KeyValuePair<string, string>(attr, value);
 		}
+
+		public static Parser<KeyValuePair<string, string>> DoubleQuotedAttribute = Attribute('"');
+		public static Parser<KeyValuePair<string, string>> SingleQuotedAttribute = Attribute('\'');
+
+		private static readonly Parser<Dictionary<string, string>> Attributes =
+			from attributes in DoubleQuotedAttribute.Or(SingleQuotedAttribute).Many()
+			select attributes.ToDictionary(kv => kv.Key, kv => kv.Value);
 
 		static Parser<string> EndTag(string name)
 		{
-			return Tag(from slash in Parse.Char('/')
-					   from id in Identifier
-					   where id == name
-					   select id).Named("closing tag for " + name);
+			return 
+				from lt in Parse.Char('<')
+				from slash in Parse.Char('/')
+				from id in Identifier where id == name
+				from gt in Parse.Char('>').Token()
+					   select id;
 		}
 
 		static readonly Parser<Content> Content =
@@ -50,11 +46,11 @@ namespace QuickXml.Speak
 		static readonly Parser<Node> FullNode =
 			from lt in Parse.Char('<')
 			from tag in Identifier
-			from attributes in Attribute.Or(SqAttribute).Many()
+			from attributes in Attributes
 			from gt in Parse.Char('>').Token()
 			from nodes in Parse.Ref(() => Item).Many()
 			from end in EndTag(tag)
-			select new Node(attributes.ToDictionary(kv => kv.Key, kv => kv.Value))
+			select new Node(attributes)
 			       	{
 			       		Name = tag, Children = nodes
 			       	};
@@ -62,10 +58,10 @@ namespace QuickXml.Speak
 		private static readonly Parser<Node> ShortNode =
 			from lt in Parse.Char('<')
 			from tag in Identifier
-			from attributes in Attribute.Or(SqAttribute).Many()
+			from attributes in Attributes
 			from slash in Parse.Char('/').Token()
 			from gt in Parse.Char('>').Token()
-			select new Node(attributes.ToDictionary(kv => kv.Key, kv => kv.Value)) { Name = tag };
+			select new Node(attributes) { Name = tag };
 
 		static readonly Parser<Node> Node = ShortNode.Or(FullNode);
 
