@@ -40,18 +40,7 @@ namespace QuickXml
 					};
 		}
 
-		public static XmlParser<string> Content(string tagName)
-		{
-			return
-				state =>
-				{
-					Node child;
-					var hasChild = state.NextChild(tagName, out child);
-					if (hasChild)
-						return Result.Success(((Content)child.Children.Single()).Text, state);
-					return Result.Failure<string>(state);
-				};
-		}
+
 
 		public static XmlParser<string> Content(this XmlParser<Node> parser)
 		{
@@ -135,6 +124,20 @@ namespace QuickXml
 						return result;
 					}
 					return Result.Success(default(T), state);
+				};
+		}
+
+		public static XmlParser<T> Or<T>(this XmlParser<T> parser, T value)
+		{
+			return
+				state =>
+				{
+					var result = parser(state);
+					if (result.WasSuccessFull)
+					{
+						return result;
+					}
+					return Result.Success(value, state);
 				};
 		}
 	}

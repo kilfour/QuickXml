@@ -192,19 +192,18 @@ namespace QuickXml.Tests
 			Assert.Null(result);
 		}
 
-		//[Fact]
-		//public void OrValue()
-		//{
-		//    const string input = "<root></root>";
+		[Fact]
+		public void OrValue()
+		{
+			const string input = "<root></root>";
 
-		//    var xmlParser =
-		//        from root in XmlParse.Into("root")
-		//        from first in XmlParse.Content("first").Or("Test")
-		//        select first;
+			var xmlParser =
+				from first in XmlParse.Child("first").Content().Or("Test")
+				select first;
 
-		//    var result = xmlParser.Parse(input);
-		//    Assert.Equal("Test", result);
-		//}
+			var result = xmlParser.Parse(input);
+			Assert.Equal("Test", result);
+		}
 
 		//[Fact]
 		//public void AsInt()
