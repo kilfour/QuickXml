@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using QuickXml.Speak;
+using QuickXml.XmlStructure;
 
 namespace QuickXml.UnderTheHood
 {

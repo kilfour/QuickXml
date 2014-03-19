@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using QuickXml.Speak;
 using QuickXml.UnderTheHood;
+using QuickXml.XmlStructure;
 
 namespace QuickXml
 {
 	public static partial class XmlParse
 	{
-		public static XmlParser<string> Content(this XmlParser<Node> parser)
+		public static XmlParser<string> Content(this XmlParser<XmlParseNode> parser)
 		{
 			return
 				state =>

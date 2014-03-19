@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using QuickXml.XmlStructure;
 using Sprache;
 
 namespace QuickXml.Speak
@@ -36,24 +37,27 @@ namespace QuickXml.Speak
 				from slash in Parse.Char('/')
 				from id in Identifier where id == name
 				from gt in Parse.Char('>').Token()
-					   select id;
+				select id;
 		}
 
 		static readonly Parser<Content> Content =
 			from chars in Parse.CharExcept('<').Many()
 			select new Content { Text = new string(chars.ToArray()) };
 
-		static readonly Parser<Node> FullNode =
+		private static readonly Parser<Node> FullNode =
 			from lt in Parse.Char('<')
 			from tag in Identifier
 			from attributes in Attributes
 			from gt in Parse.Char('>').Token()
 			from nodes in Parse.Ref(() => Item).Many()
 			from end in EndTag(tag)
-			select new Node(attributes)
-			       	{
-			       		Name = tag, Children = nodes
-			       	};
+			select
+				new Node
+					{
+						Name = tag,
+						Attributes = attributes,
+						Children = nodes
+					};
 
 		private static readonly Parser<Node> ShortNode =
 			from lt in Parse.Char('<')
@@ -61,15 +65,23 @@ namespace QuickXml.Speak
 			from attributes in Attributes
 			from slash in Parse.Char('/').Token()
 			from gt in Parse.Char('>').Token()
-			select new Node(attributes) { Name = tag };
+			select 
+			new Node
+				{
+					Name = tag,
+					Attributes = attributes
+				};
 
 		static readonly Parser<Node> Node = ShortNode.Or(FullNode);
 
-		static readonly Parser<Item> Item = Node.Select(n => (Item)n).XOr(Content);
+		static readonly Parser<Item> Item = Node.XOr<Item>(Content);
 
 		public static readonly Parser<Document> Document =
-			from leading in Parse.WhiteSpace.Many()
-			from doc in Node.Select(n => new Document { Root = n }).End()
-			select doc;
+			from root in Node.Token()
+			select
+				new Document
+					{
+						Root = root
+					};
 	}
 }

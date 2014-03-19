@@ -1,11 +1,12 @@
 ﻿using QuickXml.Speak;
 using QuickXml.UnderTheHood;
+using QuickXml.XmlStructure;
 
 namespace QuickXml
 {
 	public static partial class XmlParse
 	{
-		public static XmlParser<string> Attribute(this XmlParser<Node> parser, string attributeName)
+		public static XmlParser<string> Attribute(this XmlParser<XmlParseNode> parser, string attributeName)
 		{
 			return
 				state =>

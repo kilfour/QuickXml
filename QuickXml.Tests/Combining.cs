@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using QuickXml.UnderTheHood;
 using Xunit;
 
 namespace QuickXml.Tests

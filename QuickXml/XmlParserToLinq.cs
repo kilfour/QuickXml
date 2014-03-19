@@ -1,6 +1,7 @@
 ﻿using System;
 using QuickXml.Speak;
 using QuickXml.UnderTheHood;
+using QuickXml.XmlStructure;
 
 namespace QuickXml
 {
@@ -17,9 +18,9 @@ namespace QuickXml
 						{
 							if (state.UseNullNode)
 							{
-								if (typeof(TValueOne) == typeof(Node))
+								if (typeof(TValueOne) == typeof(XmlParseNode))
 								{
-									var value = ((TValueOne)((object)new NullNode()));
+									var value = ((TValueOne)((object)new XmlParseNullNode()));
 									return new XmlParserResult<TValueTwo>(selector(value), state, false);
 								}
 							}
@@ -41,9 +42,9 @@ namespace QuickXml
 						{
 							if(state.UseNullNode)
 							{
-								if(typeof(TValueOne) == typeof(Node))
+								if (typeof(TValueOne) == typeof(XmlParseNode))
 								{
-									var value = ((TValueOne) ((object) new NullNode()));
+									var value = ((TValueOne)((object)new XmlParseNullNode()));
 									return selector(value)(state);
 								}
 							}

@@ -1,4 +1,6 @@
-﻿namespace QuickXml.Speak
+﻿using QuickXml.Speak;
+
+namespace QuickXml.XmlStructure
 {
 	public class Content : Item
 	{
