@@ -10,8 +10,8 @@ namespace QuickXml.Tests
 			select first;
 
 		private readonly XmlParser<string> parserTwo =
-			from first in XmlParse.Child("second").Content()
-			select first;
+			from second in XmlParse.Child("second").Content()
+			select second;
 
 		[Fact]
 		public void First()
@@ -34,9 +34,8 @@ namespace QuickXml.Tests
 		{
 			const string input = "<root><first>test</first><second>test again</second></root>";
 			var parser =
-				from root in XmlParse.Root()
-				from first in root.Apply(parserOne)
-				from second in root.Apply(parserTwo)
+				from first in parserOne
+				from second in parserTwo
 				select new[] { first, second };
 
 			var result = parser.Parse(input);
@@ -50,10 +49,8 @@ namespace QuickXml.Tests
 		{
 			const string input = "<root><first>test</first><aha><second>test again</second></aha></root>";
 			var parser =
-				from root in XmlParse.Root()
-				from first in root.Apply(parserOne)
-				from aha in root.Apply(XmlParse.Child("aha"))
-				from second in aha.Apply(parserTwo)
+				from first in parserOne
+				from second in XmlParse.Child("aha").Apply(parserTwo)
 				select new[] { first, second };
 
 			var result = parser.Parse(input);
@@ -67,8 +64,7 @@ namespace QuickXml.Tests
 		{
 			const string input = "<root><first>test</first><first>test again</first></root>";
 			var parser =
-				from root in XmlParse.Root()
-				from first in root.Apply(parserOne.Many())
+				from first in parserOne.Many()
 				select first.ToArray();
 
 			var result = parser.Parse(input);

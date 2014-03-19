@@ -199,7 +199,7 @@ namespace QuickXml.Tests
 		{
 			const string input = "<root></root>";
 
-			var xmlParser =
+			XmlParser<string> xmlParser =
 				from first in XmlParse.Child("first").Content().OrDefault()
 				select first;
 

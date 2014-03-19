@@ -22,10 +22,9 @@ namespace QuickXml.Tests
 
 			var periodParser =
 				from period in XmlParse.Child("Period")
-				from interval in period.Child("TimeInterval")
-				from date in interval.Attribute("v").DateSplit()
+				from date in period.Child("TimeInterval").Attribute("v").DateSplit()
 				select
-					new InputLTAXmlPeriodDto
+					new InputLtaXmlPeriodDto
 						{
 							Date = date
 						};
@@ -36,41 +35,41 @@ namespace QuickXml.Tests
 				from outArea in root.Child("OutArea").Attribute("v")
 				from period in root.Apply(periodParser)
 				select
-					new InputLTAXmlScheduleTimeSeriesDto
+					new InputLtaXmlScheduleTimeSeriesDto
 						{
-							InAreaHubEIC = inArea,
-							OutAreaHubEIC = outArea,
+							InAreaHubEic = inArea,
+							OutAreaHubEic = outArea,
 							Period = period
 						};
 
 			var result = aParser.Parse(xml);
-			Assert.Equal("10YFR-RTE------C", result.InAreaHubEIC);
-			Assert.Equal("10YBE----------2", result.OutAreaHubEIC);
+			Assert.Equal("10YFR-RTE------C", result.InAreaHubEic);
+			Assert.Equal("10YBE----------2", result.OutAreaHubEic);
 			Assert.Equal(new DateTime(2014, 01, 29, 23, 0, 0, DateTimeKind.Utc), result.Period.Date.ToUniversalTime());
 		}
 
-		public class InputLTAXmlScheduleTimeSeriesDto
+		public class InputLtaXmlScheduleTimeSeriesDto
 		{
-			public string InAreaHubEIC { get; set; }
-			public string OutAreaHubEIC { get; set; }
-			public InputLTAXmlPeriodDto Period { get; set; }
+			public string InAreaHubEic { get; set; }
+			public string OutAreaHubEic { get; set; }
+			public InputLtaXmlPeriodDto Period { get; set; }
 		}
 
-		public class InputLTAXmlPeriodDto
+		public class InputLtaXmlPeriodDto
 		{
-			public InputLTAXmlPeriodDto()
+			public InputLtaXmlPeriodDto()
 			{
-				Intervals = new List<InputLTAXmlIntervalDto>();
+				Intervals = new List<InputLtaXmlIntervalDto>();
 			}
 
-			public List<InputLTAXmlIntervalDto> Intervals { get; set; }
+			public List<InputLtaXmlIntervalDto> Intervals { get; set; }
 			public DateTime Date { get; set; }
 		}
 
-		public class InputLTAXmlIntervalDto
+		public class InputLtaXmlIntervalDto
 		{
 			public int Position { get; set; }
-			public decimal LTA { get; set; }
+			public decimal Lta { get; set; }
 		}
 	}
 
@@ -78,17 +77,10 @@ namespace QuickXml.Tests
 	{
 		public static XmlParser<DateTime> DateSplit(this XmlParser<string> parser)
 		{
-			return
-				state =>
-				{
-					var result = parser(state);
-					if (result.WasSuccessFull)
-					{
-						var value = DateTime.Parse(result.Value.Split('/').First()).ToUniversalTime();
-						return Result.Success(value, state);
-					}
-					return Result.Failure<DateTime>(state);
-				};
+			return state =>
+			       parser(state)
+			       	.IfSuccessfull(
+			       		result => Result.Success(DateTime.Parse(result.Value.Split('/').First()).ToUniversalTime(), state));
 		}
 	}
 }
