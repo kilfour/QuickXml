@@ -8,10 +8,11 @@ namespace QuickXml
 			this XmlParser<TValueOne> xmlParser,
 			Func<TValueOne, TValueTwo> selector)
 		{
-			//return s => new XmlParserResult<TValueTwo>(selector(xmlParser(s).Value), s);
 			return s =>
 			       	{
 			       		var result = xmlParser(s);
+						if(!result.WasSuccessFull)
+							throw new XmlParseException("Catastrophic Failure");
 			       		return new XmlParserResult<TValueTwo>(selector(result.Value), s, result.WasSuccessFull);
 			       	};
 		}
@@ -20,7 +21,11 @@ namespace QuickXml
 			this XmlParser<TValueOne> xmlParser,
 			Func<TValueOne, XmlParser<TValueTwo>> selector)
 		{
-			return s => selector(xmlParser(s).Value)(s);
+			return s =>
+			       	{
+			       		var result = xmlParser(s);
+			       		return selector(result.Value)(s);
+			       	};
 		}
 
 		public static XmlParser<TValueThree> SelectMany<TValueOne, TValueTwo, TValueThree>(

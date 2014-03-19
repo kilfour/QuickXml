@@ -143,7 +143,44 @@ namespace QuickXml.Tests
 		}
 
 		[Fact]
-		public void OrDefault() // seems to be default behaviour
+		public void ChildFailureThrows()
+		{
+			const string input = "<root></root>";
+
+			var xmlParser =
+				from first in XmlParse.Child("first")
+				select first;
+
+			Assert.Throws<XmlParseException>(() => xmlParser.Parse(input));
+		}
+
+		[Fact]
+		public void ContentFailureThrows()
+		{
+			const string input = "<root></root>";
+
+			var xmlParser =
+				from first in XmlParse.Child("first").Content()
+				select first;
+
+			Assert.Throws<XmlParseException>(() => xmlParser.Parse(input));
+		}
+
+		[Fact]
+		public void ChildOrDefault()
+		{
+			const string input = "<root></root>";
+
+			var xmlParser =
+				from first in XmlParse.Child("first").OrDefault()
+				select first;
+
+			var result = xmlParser.Parse(input);
+			Assert.Null(result);
+		}
+
+		[Fact]
+		public void ContentOrDefault()
 		{
 			const string input = "<root></root>";
 
