@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using QuickXml.UnderTheHood;
 
 namespace QuickXml.Speak
@@ -14,7 +16,7 @@ namespace QuickXml.Speak
 			this.attributes = attributes;
 		}
 
-		public XmlParser<string> Attribute(string attributeName)
+		public virtual XmlParser<string> Attribute(string attributeName)
 		{
 			return
 				state =>
@@ -25,12 +27,12 @@ namespace QuickXml.Speak
 				};
 		}
 
-		public XmlParser<Node> Child(string tagName)
+		public virtual XmlParser<Node> Child(string tagName)
 		{
 			return Wrap(XmlParse.Child(tagName));
 		}
 
-		public XmlParser<T> Apply<T>(XmlParser<T> parser)
+		public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
 		{
 			return
 				state =>
@@ -48,6 +50,12 @@ namespace QuickXml.Speak
 					state.Current = this;
 					return parser(state);
 				};
+		}
+
+		public virtual XmlParserResult<string> GetContent(XmlParserState state)
+		{
+			var content = ((Content) Children.Single()).Text;
+			return Result.Success(content, state);
 		}
 	}
 }

@@ -14,8 +14,7 @@ namespace QuickXml
 						var result = parser(state);
 						if(result.WasSuccessFull)
 						{
-							var content = ((Content)result.Value.Children.Single()).Text;
-							return Result.Success(content, state);	
+							return result.Value.GetContent(state);
 						}
 						return Result.Failure<string>(state);
 					};

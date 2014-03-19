@@ -1,4 +1,5 @@
-﻿using QuickXml.UnderTheHood;
+﻿using QuickXml.Speak;
+using QuickXml.UnderTheHood;
 
 namespace QuickXml
 {
@@ -20,15 +21,24 @@ namespace QuickXml
 		{
 			return
 				state =>
-				{
-					var result = parser(state);
-					if (result.WasSuccessFull)
-						return result;
-					result = otherParser(state);
-					if (result.WasSuccessFull)
-						return result;
-					return Result.Failure<T>(state);
-				};
+					{
+						state.UseNullNode = true;
+						var result = parser(state);
+						if (result.WasSuccessFull)
+						{
+							state.UseNullNode = false;
+							return result;
+						}
+
+						result = otherParser(state);
+						if (result.WasSuccessFull)
+						{
+							state.UseNullNode = false;
+							return result;
+						}
+						state.UseNullNode = false;
+						return Result.Failure<T>(state);
+					};
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using QuickXml.Speak;
 
 namespace QuickXml.UnderTheHood
@@ -11,6 +12,8 @@ namespace QuickXml.UnderTheHood
 
 		public string CurrentChildTag { get; set; }
 		public int CurrentChildIndex { get; set; }
+
+		public bool UseNullNode { get; set; }
 
 		public bool NextChild(string tagName, out Node node)
 		{

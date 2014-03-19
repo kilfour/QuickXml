@@ -1,4 +1,5 @@
 ﻿using System;
+using QuickXml.Speak;
 using QuickXml.UnderTheHood;
 
 namespace QuickXml
@@ -9,12 +10,23 @@ namespace QuickXml
 			this XmlParser<TValueOne> xmlParser,
 			Func<TValueOne, TValueTwo> selector)
 		{
-			return s =>
+			return state =>
 			       	{
-			       		var result = xmlParser(s);
-						if(!result.WasSuccessFull)
-							throw new XmlParserException("Catastrophic Failure");
-			       		return new XmlParserResult<TValueTwo>(selector(result.Value), s, result.WasSuccessFull);
+			       		var result = xmlParser(state);
+						if (!result.WasSuccessFull)
+						{
+							if (state.UseNullNode)
+							{
+								if (typeof(TValueOne) == typeof(Node))
+								{
+									var value = ((TValueOne)((object)new NullNode()));
+									return new XmlParserResult<TValueTwo>(selector(value), state, false);
+								}
+							}
+							else
+								throw new XmlParserException("Catastrophic Failure");
+						}
+			       		return new XmlParserResult<TValueTwo>(selector(result.Value), state, result.WasSuccessFull);
 			       	};
 		}
 
@@ -22,10 +34,23 @@ namespace QuickXml
 			this XmlParser<TValueOne> xmlParser,
 			Func<TValueOne, XmlParser<TValueTwo>> selector)
 		{
-			return s =>
+			return state =>
 			       	{
-			       		var result = xmlParser(s);
-			       		return selector(result.Value)(s);
+			       		var result = xmlParser(state);
+						if (!result.WasSuccessFull)
+						{
+							if(state.UseNullNode)
+							{
+								if(typeof(TValueOne) == typeof(Node))
+								{
+									var value = ((TValueOne) ((object) new NullNode()));
+									return selector(value)(state);
+								}
+							}
+							else
+								throw new XmlParserException("Catastrophic Failure");	
+						}
+			       		return selector(result.Value)(state);
 			       	};
 		}
 
