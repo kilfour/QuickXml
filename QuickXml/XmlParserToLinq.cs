@@ -13,7 +13,7 @@ namespace QuickXml
 			return state =>
 			       	{
 			       		var result = xmlParser(state);
-						if (!result.WasSuccessFull && !state.DontThrowFailures)
+						if (!result.WasSuccessFull)
 						{
 							if (state.UseNullNode)
 							{
@@ -23,7 +23,7 @@ namespace QuickXml
 									return new XmlParserResult<TValueTwo>(selector(value), state, false);
 								}
 							}
-							else
+							else if (!state.DontThrowFailures)
 								throw new XmlParserException("Catastrophic Failure");
 						}
 			       		return new XmlParserResult<TValueTwo>(selector(result.Value), state, result.WasSuccessFull);
@@ -47,7 +47,7 @@ namespace QuickXml
 									return selector(value)(state);
 								}
 							}
-							else
+							else if (!state.DontThrowFailures)
 								throw new XmlParserException("Catastrophic Failure");	
 						}
 			       		return selector(result.Value)(state);
