@@ -120,7 +120,7 @@ namespace QuickXml.Tests
 			const string input = "<root anAttribute=\"test\"></root>";
 
 			var xmlParser =
-				from attr in XmlParse.Attribute("anAttribute")
+				from attr in XmlParse.Root().Attribute("anAttribute")
 				select attr;
 
 			var result = xmlParser.Parse(input);
@@ -133,7 +133,7 @@ namespace QuickXml.Tests
 			const string input = "<root anAttribute=\"42\"></root>";
 
 			var xmlParser =
-				from attr in XmlParse.Attribute("anAttribute").Int()
+				from attr in XmlParse.Root().Attribute("anAttribute").Int()
 				select attr;
 
 			var result = xmlParser.Parse(input);
@@ -146,7 +146,7 @@ namespace QuickXml.Tests
 			const string input = "<root anAttribute=\"test\" />";
 
 			var xmlParser =
-				from attr in XmlParse.Attribute("anAttribute")
+				from attr in XmlParse.Root().Attribute("anAttribute")
 				select attr;
 
 			var result = xmlParser.Parse(input);

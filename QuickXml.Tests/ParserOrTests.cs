@@ -1,4 +1,5 @@
-﻿using QuickXml.UnderTheHood;
+﻿using System.Linq;
+using QuickXml.UnderTheHood;
 using Xunit;
 
 namespace QuickXml.Tests
@@ -73,6 +74,20 @@ namespace QuickXml.Tests
 
 			var result = xmlParser.Parse(input);
 			Assert.Equal("some text", result);
+		}
+
+		[Fact]
+		public void ManyOr()
+		{
+			const string input = "<root><first>some text</first><second>some other text</second></root>";
+
+			var xmlParser =
+				from content in XmlParse.Child("first").Or(XmlParse.Child("second")).Content().Many()
+				select content;
+
+			var result = xmlParser.Parse(input).ToArray();
+			Assert.Equal("some text", result[0]);
+			Assert.Equal("some other text", result[1]);
 		}
 	}
 }

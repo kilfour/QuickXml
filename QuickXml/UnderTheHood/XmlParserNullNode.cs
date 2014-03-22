@@ -12,7 +12,7 @@
 
 		public override XmlParser<XmlParserNode> Child(string tagName)
 		{
-			return state => Result.Success(this, state);
+			return Result.Failure<XmlParserNode>;
 		}
 
 		public override XmlParser<T> Apply<T>(XmlParser<T> parser)

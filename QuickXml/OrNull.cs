@@ -4,7 +4,7 @@ namespace QuickXml
 {
 	public static partial class XmlParse
 	{
-		public static XmlParser<T> OrDefault<T>(this XmlParser<T> parser)
+		public static XmlParser<T> OrNull<T>(this XmlParser<T> parser) where T: class
 		{
 			return
 				state =>
@@ -18,8 +18,10 @@ namespace QuickXml
 							return result;
 						}
 						state.Current = old.Reset();
-						return Result.Success(default(T), state);
+						state.UseNullNode = false;
+						return Result.Success((T)null, state);
 					};
+
 		}
 	}
 }

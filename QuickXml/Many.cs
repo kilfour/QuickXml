@@ -12,13 +12,18 @@ namespace QuickXml
 				var list = new List<T>();
 				var success = true;
 				state.DontThrowFailures = true;
+				state.UseNullNode = true;
 				while (success)
 				{
 					var result = parser(state);
-					list.Add(result.Value);
-					success = result.WasSuccessFull;
+					success = result.WasSuccessFull; 
+					if(success)
+						list.Add(result.Value);
+					state.DontThrowFailures = true;
+					state.UseNullNode = true;
 				}
 				state.DontThrowFailures = false;
+				state.UseNullNode = false;
 				return Result.Success<IEnumerable<T>>(list, state);
 			};
 		}

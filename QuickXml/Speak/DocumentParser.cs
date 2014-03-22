@@ -9,7 +9,7 @@ namespace QuickXml.Speak
 	{
 		private static readonly Parser<string> Identifier =
 			from first in Parse.Letter.Once()
-			from rest in Parse.LetterOrDigit.XOr(Parse.Char('-')).XOr(Parse.Char('_')).Many()
+			from rest in Parse.LetterOrDigit.XOr(Parse.Char('-')).XOr(Parse.Char('_')).XOr(Parse.Char(':')).Many()
 			select new string(first.Concat(rest).ToArray());
 
 		private static Parser<KeyValuePair<string, string>> Attribute(char quote)
@@ -60,7 +60,7 @@ namespace QuickXml.Speak
 					};
 
 		private static readonly Parser<Node> ShortNode =
-			from lt in Parse.Char('<')
+			from lt in Parse.Char('<').Token()
 			from tag in Identifier
 			from attributes in Attributes
 			from slash in Parse.Char('/').Token()
@@ -76,8 +76,15 @@ namespace QuickXml.Speak
 
 		private static readonly Parser<Item> Item = Node.XOr<Item>(Content);
 
+		private static readonly Parser<string> Header =
+			from begin in Parse.String("<?")
+			from content in Parse.AnyChar.Except(Parse.String("?>")).Many().Text()
+			from end in Parse.String("?>")
+			select content;
+		
 		public static readonly Parser<Document> Document =
-			from root in Node.Token()
+			from header in Header.Optional()
+			from root in Node.Token().End()
 			select
 				new Document
 					{

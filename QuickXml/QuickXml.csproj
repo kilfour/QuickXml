@@ -41,6 +41,9 @@
     <Compile Include="Child.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Apply.cs" />
+    <Compile Include="OrNull.cs" />
+    <Compile Include="Nullable.cs" />
+    <Compile Include="Guid.cs" />
     <Compile Include="OrDefault.cs" />
     <Compile Include="Or.cs" />
     <Compile Include="Decimal.cs" />

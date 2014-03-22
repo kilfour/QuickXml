@@ -8,7 +8,7 @@ namespace QuickXml
 	{
 		public static T Parse<T>(this XmlParser<T> parser, string input)
 		{
-			var document = DocumentParser.Document.End().Parse(input);
+			var document = DocumentParser.Document.Parse(input);
 			var state = new XmlParserState(document);
 			var result = parser(state);
 			return result.Value;

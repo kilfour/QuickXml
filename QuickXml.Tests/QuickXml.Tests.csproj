@@ -41,10 +41,13 @@
   <ItemGroup>
     <Compile Include="ChildTests.cs" />
     <Compile Include="Combining.cs" />
+    <Compile Include="Recursion.cs" />
     <Compile Include="CovariantResult.cs" />
     <Compile Include="Example.cs" />
+    <Compile Include="ManyTests.cs" />
     <Compile Include="ParserOrTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Speak\Header.cs" />
     <Compile Include="Spike.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +56,7 @@
       <Name>QuickXml</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Speak\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,8 +9,8 @@ namespace QuickXml
 			return
 				state =>
 					{
-						state.Current = state.Document.Root;
-						return Result.Success(new XmlParserNode(state.Current), state);
+						state.Current = new XmlParserNode(state.Document.Root);
+						return Result.Success(state.Current, state);
 					};
 		}
 	}
