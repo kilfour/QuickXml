@@ -4,7 +4,7 @@ using Xunit;
 
 namespace QuickXml.Tests
 {
-	public class Spike
+    public class Spike
 	{
 		[Fact]
 		public void Content()

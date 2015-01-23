@@ -2,7 +2,7 @@
 
 namespace QuickXml.Tests
 {
-	public class Recursion
+	public class TreeRecursion
 	{
 		public class Folder
 		{

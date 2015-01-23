@@ -37,7 +37,8 @@ namespace QuickXml.UnderTheHood
 
 		public virtual XmlParserResult<string> GetContent(XmlParserState state)
 		{
-			var content = ((Content) node.Children.Single()).Text;
+		    var contentNode = node.Children.Single() as Content;
+            var content = contentNode == null ? "" : contentNode.Text;
 			return Result.Success(content, state);
 		}
 
