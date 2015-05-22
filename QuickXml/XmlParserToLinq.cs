@@ -13,8 +13,8 @@ namespace QuickXml
 				state =>
 					{
 						var result = xmlParser(state);
-						var value = HandleFailure(state, result);
-						return new XmlParserResult<TValueTwo>(selector(value), state, result.WasSuccessFull);
+						var value = HandleFailure(result, state);
+					    return new XmlParserResult<TValueTwo>(selector(value), state, result.WasSuccessFull);
 					};
 		}
 
@@ -26,7 +26,7 @@ namespace QuickXml
 				state =>
 					{
 						var result = xmlParser(state);
-						var value = HandleFailure(state, result);
+                        var value = HandleFailure(result, state);
 						return selector(value)(state);
 					};
 		}
@@ -40,23 +40,18 @@ namespace QuickXml
 		}
 
 		private static T HandleFailure<T>(
-			XmlParserState state,
-			IXmlParserResult<T> result)
+			IXmlParserResult<T> result,
+            XmlParserState state)
 		{
-			if (!result.WasSuccessFull)
-			{
-				if (state.UseNullNode)
-				{
-					if (typeof(T) == typeof(XmlParserNode))
-					{
-						var value = ((T)((object)new XmlParserNullNode()));
-						return value;
-					}
-				}
-				else if (!state.DontThrowFailures)
-					throw new XmlParserException("Catastrophic Failure");
-			}
-			return result.Value;
+		    if (typeof (T) == typeof (XmlParserNode))
+		    {
+		        if (!result.WasSuccessFull)
+		        {
+                    return ((T)((object)new XmlParserNullNode()));
+		        }
+		    }
+
+		    return result.Value;
 		}
 	}
 }

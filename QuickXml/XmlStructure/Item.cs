@@ -1,4 +1,7 @@
 ﻿namespace QuickXml.XmlStructure
 {
-	public class Item { }
+    public abstract class Item
+    {
+        public abstract string AsString();
+    }
 }

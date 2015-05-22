@@ -40,6 +40,12 @@ namespace QuickXml.Speak
 				select id;
 		}
 
+        private static readonly Parser<string> Comment =
+            from left in Parse.String("<!--")
+            from chars in Parse.AnyChar.Except(Parse.String("-->")).Many()
+            from right in Parse.String("-->")
+            select string.Empty;
+
         private static readonly Parser<Content> CDataContent =
             from left in Parse.String("<![CDATA[")
             from chars in Parse.AnyChar.Except(Parse.String("]]>")).Many()
@@ -75,10 +81,14 @@ namespace QuickXml.Speak
 				new Node
 					{
 						Name = tag,
-						Attributes = attributes
+						Attributes = attributes,
+                        Children = new Item[0]
 					};
 
-		private static readonly Parser<Node> Node = ShortNode.Or(FullNode);
+	    private static readonly Parser<Node> Node =
+            from comment in Comment.Optional()
+	        from node in ShortNode.Or(FullNode)
+	        select node;
 
         private static readonly Parser<Item> Item = CDataContent.Or<Item>(Node).XOr<Item>(Content);
 

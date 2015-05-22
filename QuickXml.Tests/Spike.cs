@@ -154,36 +154,12 @@ namespace QuickXml.Tests
 		}
 
 		[Fact]
-		public void ChildFailureThrows()
-		{
-			const string input = "<root></root>";
-
-			var xmlParser =
-				from first in XmlParse.Child("first")
-				select first;
-
-			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
-		}
-
-		[Fact]
-		public void ContentFailureThrows()
-		{
-			const string input = "<root></root>";
-
-			var xmlParser =
-				from first in XmlParse.Child("first").Content()
-				select first;
-
-			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
-		}
-
-		[Fact]
 		public void ChildOrDefault()
 		{
 			const string input = "<root></root>";
 
 			var xmlParser =
-				from first in XmlParse.Child("first").OrDefault()
+				from first in XmlParse.Child("first").Optional().OrNull()
 				select first;
 
 			var result = xmlParser.Parse(input);
@@ -196,7 +172,7 @@ namespace QuickXml.Tests
 			const string input = "<root></root>";
 
 			XmlParser<string> xmlParser =
-				from first in XmlParse.Child("first").Content().OrDefault()
+                from first in XmlParse.Child("first").Optional().Content()
 				select first;
 
 			var result = xmlParser.Parse(input);
@@ -209,7 +185,7 @@ namespace QuickXml.Tests
 			const string input = "<root></root>";
 
 			var xmlParser =
-				from first in XmlParse.Child("first").Content().Or("Test")
+				from first in XmlParse.Child("first").Optional().Content().Or("Test")
 				select first;
 
 			var result = xmlParser.Parse(input);
@@ -230,24 +206,12 @@ namespace QuickXml.Tests
 		}
 
 		[Fact]
-		public void ContentAsIntFails()
-		{
-			const string input = "<root><first>bla</first></root>";
-
-			var xmlParser =
-				from first in XmlParse.Child("first").Content().Int()
-				select first;
-
-			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
-		}
-
-		[Fact]
 		public void AsIntOrDefault()
 		{
 			const string input = "<root><first>bla</first></root>";
 
 			var xmlParser =
-				from first in XmlParse.Child("first").Content().Int().OrDefault()
+                from first in XmlParse.Child("first").Optional().Content().Int()
 				select first;
 
 			var result = xmlParser.Parse(input);
@@ -260,7 +224,7 @@ namespace QuickXml.Tests
 			const string input = "<root><first>bla</first></root>";
 
 			var xmlParser =
-				from first in XmlParse.Child("first").Content().Int().Or(42)
+				from first in XmlParse.Child("first").Content().Int().Optional().Or(42)
 				select first;
 
 			var result = xmlParser.Parse(input);

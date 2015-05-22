@@ -14,24 +14,19 @@ namespace QuickXml.UnderTheHood
 			return new XmlParserResult<T>(default(T), state, false);
 		}
 
+        public static XmlParserResult<T> NextFailure<T>(XmlParserState state)
+        {
+            return new XmlParserResult<T>(default(T), state, false, true);
+        }
+
 		public static IXmlParserResult<TOut> IfSuccessfull<TIn, TOut>(
 			this IXmlParserResult<TIn> result,
 			Func<IXmlParserResult<TIn>, IXmlParserResult<TOut>> func)
 		{
-			if (result.WasSuccessFull)
-			{
-				return func(result);
-			}
-			return Failure<TOut>(result.State);
-		}
+            if (!result.WasSuccessFull)
+                return NextFailure<TOut>(result.State);
 
-		public static IXmlParserResult<T> WhenFailed<T>(
-			this IXmlParserResult<T> result,
-			Func<IXmlParserResult<T>, IXmlParserResult<T>> func)
-		{
-			if (result.WasSuccessFull)
-				return result;
-			return func(result);
-		} 
+            return func(result);
+		}
 	}
 }

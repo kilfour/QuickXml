@@ -6,12 +6,14 @@ namespace QuickXml
 	{
 		public static XmlParser<XmlParserNode> Child(string tagName)
 		{
-			return state => state.Current.Child(tagName)(state);
+			return state => 
+                state.Current.Child(tagName)(state);
 		}
 
 		public static XmlParser<XmlParserNode> Child(this XmlParser<XmlParserNode> parser, string tagName)
 		{
-			return state => parser(state).IfSuccessfull(result => result.Value.Child(tagName)(state));
+			return state => 
+                parser(state).IfSuccessfull(result => result.Value.Child(tagName)(state));
 		}
 	}
 }

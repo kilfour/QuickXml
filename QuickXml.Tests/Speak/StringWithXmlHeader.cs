@@ -2,10 +2,10 @@
 
 namespace QuickXml.Tests.Speak
 {
-	public class Header
+	public class StringWithXmlHeader
 	{
 		[Fact]
-		public void CanHandleXmlHeader()
+		public void CanBeParsed()
 		{
 			const string input = "<?xml version=\"1.0\" encoding=\"utf-8\"?><root>test</root>";
 			var xmlParser = XmlParse.Root().Content();

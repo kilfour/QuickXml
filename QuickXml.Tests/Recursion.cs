@@ -11,9 +11,9 @@ namespace QuickXml.Tests
 		}
 
 		private static readonly XmlParser<Folder> FolderParser =
-			from folder in XmlParse.Child("folder")
+            from folder in XmlParse.Child("folder")
 			from number in folder.Attribute("number").Int()
-			from child in folder.Apply(FolderParser.OrNull())
+            from child in folder.Apply(FolderParser.Optional().OrNull())
 			select new Folder { Number = number, Child = child };
 
 		[Fact]

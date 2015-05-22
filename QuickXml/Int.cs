@@ -13,7 +13,10 @@ namespace QuickXml
 		private static IXmlParserResult<int> TryParseInt(IXmlParserResult<string> result, XmlParserState state)
 		{
 			int value;
-			return int.TryParse(result.Value, out value) ? Result.Success(value, state) : Result.Failure<int>(state);
+		    return
+		        int.TryParse(result.Value, out value)
+		            ? Result.Success(value, state).WithOption(result.IsOption)
+                    : Result.Failure<int>(state).WithOption(result.IsOption);
 		}
 	}
 }

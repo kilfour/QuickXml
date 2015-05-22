@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using QuickXml.UnderTheHood;
 using Xunit;
 
 namespace QuickXml.Tests
@@ -30,18 +29,6 @@ namespace QuickXml.Tests
 
 			var result = xmlParser.Parse(input);
 			Assert.Equal("some text", result);
-		}
-
-		[Fact]
-		public void BothFail()
-		{
-			const string input = "<root><third>some text</third></root>";
-
-			var xmlParser =
-				from val in XmlParse.Child("first").Or(XmlParse.Child("second")).Content()
-				select val;
-
-			Assert.Throws<XmlParserException>(() => xmlParser.Parse(input));
 		}
 
 		[Fact]

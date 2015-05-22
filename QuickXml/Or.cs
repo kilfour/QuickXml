@@ -9,20 +9,18 @@ namespace QuickXml
 			return
 				state =>
 					{
-						var old = state.Current.SnapShot();
-						state.UseNullNode = true;
-						var result = parser(state);
-						if (result.WasSuccessFull)
-						{
-							state.UseNullNode = false;
-							return result;
-						}
-						state.Current = old.Reset();
-						state.UseNullNode = false;
-						return Result.Success(value, state);
+                        var result = parser(state);
+                        if (result.IsOption)
+                            return Result.Success(value, state);
+					    return result;
 					};
 
 		}
+
+        public static XmlParser<T> OrNull<T>(this XmlParser<T> parser)
+        {
+            return parser.Or((T)(object)null);
+        }
 
 		public static XmlParser<T> Or<T>(this XmlParser<T> parser, XmlParser<T> otherParser)
 		{
@@ -30,22 +28,18 @@ namespace QuickXml
 				state =>
 					{
 						var old = state.Current.SnapShot();
-						state.UseNullNode = true;
 						var result = parser(state);
 						if (result.WasSuccessFull)
 						{
-							state.UseNullNode = false;
 							return result;
 						}
 						state.Current = old.Reset();
 						result = otherParser(state);
 						if (result.WasSuccessFull)
 						{
-							state.UseNullNode = false;
 							return result;
 						}
 						state.Current = old.Reset();
-						state.UseNullNode = false;
 						return Result.Failure<T>(state);
 					};
 		}

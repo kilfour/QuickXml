@@ -21,5 +21,14 @@ namespace QuickXml.Tests
             var result = xmlParser.Parse(input);
             Assert.Equal("", result);
         }
+
+        [Fact]
+        public void WhenItsNotThereAgain()
+        {
+            const string input = "<root><child></child></root>";
+            var xmlParser = XmlParse.Root().Content();
+            var result = xmlParser.Parse(input);
+            Assert.Equal("", result);
+        }
     }
 }

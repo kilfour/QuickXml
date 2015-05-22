@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using QuickXml.XmlStructure;
 
 namespace QuickXml.UnderTheHood
@@ -31,15 +32,27 @@ namespace QuickXml.UnderTheHood
 				{
 					Node child;
 					var hasChild = NextChild(tagName, out child);
-					return hasChild ? Result.Success(new XmlParserNode(child), state) : Result.Failure<XmlParserNode>(state);
+					return 
+                        hasChild 
+                        ? Result.Success(new XmlParserNode(child), state) 
+                        : Result.Failure<XmlParserNode>(state);
 				};
 		}
 
 		public virtual XmlParserResult<string> GetContent(XmlParserState state)
 		{
-		    var contentNode = node.Children.Single() as Content;
-            var content = contentNode == null ? "" : contentNode.Text;
-			return Result.Success(content, state);
+		    if (node.Children.Count() == 1)
+		    {
+                var contentNode = node.Children.SingleOrDefault() as Content;
+                var content = contentNode == null ? "" : contentNode.Text;
+                return Result.Success(content, state);    
+		    }
+		    var builder = new StringBuilder();
+		    foreach (var child in node.Children)
+		    {
+                builder.Append(child.AsString());
+		    }
+            return Result.Success(builder.ToString(), state);
 		}
 
 		public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
@@ -86,7 +99,8 @@ namespace QuickXml.UnderTheHood
 					.Children
 					.Where(c => c is Node)
 					.Cast<Node>()
-					.Where(n => n.Name == tagName);
+					.Where(n => n.Name == tagName)
+                    .ToArray();
 
 			if (children.Count() <= currentChildIndex)
 			{	
