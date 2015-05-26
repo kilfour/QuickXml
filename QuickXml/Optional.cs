@@ -21,7 +21,7 @@ namespace QuickXml
                             var value = ((T)((object)new XmlParserOptionalNode()));
                             return Result.Success(value, state).WithOption(true);
                         }
-                        return new XmlParserResult<T>(default(T), state, false, true) {IsOption = true};
+                        return new XmlParserResult<T>(NullOrDefault.For<T>(), state, true).WithOption(true);
                     }
                     return Result.NextFailure<T>(state);
                 };

@@ -15,7 +15,9 @@ namespace QuickXml.Tests.Speak
                 select 1;
 
             var xmlParser = 
-                XmlParse.Root().Apply(childParser);
+                from root in XmlParse.Root()
+                from child in childParser
+                select child;
 
             var result = xmlParser.Parse(input);
             Assert.Equal(1, result);

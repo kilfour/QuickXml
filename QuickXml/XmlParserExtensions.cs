@@ -11,6 +11,10 @@ namespace QuickXml
 			var document = DocumentParser.Document.Parse(input);
 			var state = new XmlParserState(document);
 			var result = parser(state);
+            if(!result.WasSuccessFull)
+                throw new XmlParserException("Xml Parsing Failed");
+		    if (result.Value is XmlParserOptionalNode)
+                return NullOrDefault.For<T>();
 			return result.Value;
 		}
 	}

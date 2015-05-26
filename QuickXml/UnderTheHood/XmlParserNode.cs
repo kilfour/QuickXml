@@ -57,33 +57,18 @@ namespace QuickXml.UnderTheHood
 
 		public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
 		{
-			return Wrap(parser);
+			return state =>
+			{
+			    var old = state.Current;
+			    state.Current = new XmlParserNode(node);
+			    var result = parser(state);
+			    state.Current = old;
+			    return result;
+			};
 		}
 
 		private readonly Dictionary<string, int> childEnumerators 
 			= new Dictionary<string, int>();
-
-		private readonly Dictionary<string, int> snapshot = new Dictionary<string, int>();
-
-		public XmlParserNode SnapShot()
-		{
-			snapshot.Clear();
-			foreach (var kv in childEnumerators)
-			{
-				snapshot.Add(kv.Key, kv.Value);
-			}
-			return this;
-		}
-
-		public XmlParserNode Reset()
-		{
-			childEnumerators.Clear();
-			foreach (var kv in snapshot)
-			{
-				childEnumerators.Add(kv.Key, kv.Value);
-			}
-			return this;
-		}
 
 		public bool NextChild(string tagName, out Node child)
 		{
@@ -111,19 +96,6 @@ namespace QuickXml.UnderTheHood
 			child = children.ElementAt(currentChildIndex);
 			childEnumerators[tagName] = currentChildIndex + 1;
 			return true;
-		}
-
-		private XmlParser<T> Wrap<T>(XmlParser<T> parser)
-		{
-			return
-				state =>
-					{
-						var old = state.Current;
-						state.Current = new XmlParserNode(node);
-						var result = parser(state);
-						state.Current = old;
-						return result;
-				};
 		}
 	}
 }

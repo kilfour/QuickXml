@@ -51,6 +51,7 @@
     <Compile Include="Optional.cs" />
     <Compile Include="Root.cs" />
     <Compile Include="ToArray.cs" />
+    <Compile Include="UnderTheHood\NullOrDefault.cs" />
     <Compile Include="UnderTheHood\XmlParserNode.cs" />
     <Compile Include="UnderTheHood\XmlParserOptionalNode.cs" />
     <Compile Include="XmlStructure\Content.cs" />

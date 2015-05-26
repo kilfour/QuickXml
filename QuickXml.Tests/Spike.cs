@@ -159,7 +159,7 @@ namespace QuickXml.Tests
 			const string input = "<root></root>";
 
 			var xmlParser =
-				from first in XmlParse.Child("first").Optional().OrNull()
+				from first in XmlParse.Child("first").Optional()
 				select first;
 
 			var result = xmlParser.Parse(input);
@@ -211,7 +211,7 @@ namespace QuickXml.Tests
 			const string input = "<root><first>bla</first></root>";
 
 			var xmlParser =
-                from first in XmlParse.Child("first").Optional().Content().Int()
+                from first in XmlParse.Child("first").Optional().Content().Int().Optional()
 				select first;
 
 			var result = xmlParser.Parse(input);

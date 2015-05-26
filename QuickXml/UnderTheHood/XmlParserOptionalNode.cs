@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace QuickXml.UnderTheHood
+﻿namespace QuickXml.UnderTheHood
 {
     public class XmlParserOptionalNode : XmlParserNode
     {
@@ -19,14 +17,12 @@ namespace QuickXml.UnderTheHood
 
         public override XmlParser<T> Apply<T>(XmlParser<T> parser)
         {
-            return state => Result.Success(default(T), state).WithOption(true);
+            return state => Result.Success(NullOrDefault.For<T>(), state).WithOption(true);
         }
 
         public override XmlParserResult<string> GetContent(XmlParserState state)
         {
-            var result = Result.Success<string>(null, state);
-            result.IsOption = true;
-            return result;
+            return Result.Success<string>(null, state).WithOption(true);
         }
     }
 }
