@@ -3,7 +3,7 @@ using Xunit;
 
 namespace QuickXml.Tests
 {
-    public class WhatToDoWithThis
+    public class Failures
     {
         [Fact]
         public void BothFail()

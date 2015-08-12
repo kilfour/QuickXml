@@ -30,5 +30,14 @@ namespace QuickXml.Tests
             var result = xmlParser.Parse(input);
             Assert.Equal("", result);
         }
+
+        [Fact]
+        public void NodeContent()
+        {
+            const string input = "<root><child><text>test</text></child></root>";
+            var xmlParser = XmlParse.Root().Child("child").Content();
+            var result = xmlParser.Parse(input);
+            Assert.Equal("", result);
+        }
     }
 }

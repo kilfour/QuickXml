@@ -52,7 +52,8 @@ namespace QuickXml.Tests
                 };
 
             var xmlParser =
-                from product in XmlParse.Child("product")
+                from root in XmlParse.Root()
+                from product in root.Child("product")
                 from links in product.Child("links").Apply(linkParser.Many())
                 select links;
 

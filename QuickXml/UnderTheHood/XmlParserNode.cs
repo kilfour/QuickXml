@@ -41,12 +41,12 @@ namespace QuickXml.UnderTheHood
 
 		public virtual XmlParserResult<string> GetContent(XmlParserState state)
 		{
-		    if (node.Children.Count() == 1)
-		    {
-                var contentNode = node.Children.SingleOrDefault() as Content;
-                var content = contentNode == null ? "" : contentNode.Text;
-                return Result.Success(content, state);    
-		    }
+            //if (node.Children.Count() == 1)
+            //{
+            //    var contentNode = node.Children.SingleOrDefault() as Content;
+            //    var content = contentNode == null ? "" : contentNode.Text;
+            //    return Result.Success(content, state);    
+            //}
 		    var builder = new StringBuilder();
 		    foreach (var child in node.Children)
 		    {
@@ -70,7 +70,7 @@ namespace QuickXml.UnderTheHood
 		private readonly Dictionary<string, int> childEnumerators 
 			= new Dictionary<string, int>();
 
-		public bool NextChild(string tagName, out Node child)
+		private bool NextChild(string tagName, out Node child)
 		{
 			child = null;
 
