@@ -39,5 +39,14 @@ namespace QuickXml.Tests
             var result = xmlParser.Parse(input);
             Assert.Equal("", result);
         }
+
+        [Fact]
+        public void WhiteSpace()
+        {
+            const string input = "<root><child> test  </child></root>";
+            var xmlParser = XmlParse.Root().Child("child").Content();
+            var result = xmlParser.Parse(input);
+            Assert.Equal(" test  ", result);
+        }
     }
 }

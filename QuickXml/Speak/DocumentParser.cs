@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using QuickXml.XmlStructure;
 using Sprache;
@@ -7,7 +8,11 @@ namespace QuickXml.Speak
 {
 	public static class DocumentParser
 	{
-		private static readonly Parser<string> Identifier =
+	    private static readonly Parser<string> WhiteSpace =
+	        from ws in Parse.Char(Char.IsWhiteSpace, "").Many()
+            select ws.ToString();
+
+        private static readonly Parser<string> Identifier =
 			from first in Parse.Letter.Once()
 			from rest in Parse.LetterOrDigit.XOr(Parse.Char('-')).XOr(Parse.Char('_')).XOr(Parse.Char(':')).Many()
 			select new string(first.Concat(rest).ToArray());
@@ -36,7 +41,8 @@ namespace QuickXml.Speak
 				from lt in Parse.Char('<').Token()
 				from slash in Parse.Char('/').Token()
 				from id in Identifier where id == name
-				from gt in Parse.Char('>').Token()
+				from chars in WhiteSpace
+                from gt in Parse.Char('>')
 				select id;
 		}
 
@@ -57,10 +63,11 @@ namespace QuickXml.Speak
 			select new Content { Text = new string(chars.ToArray()) };
 
 		private static readonly Parser<Node> FullNode =
-			from lt in Parse.Char('<')
+            from lt in Parse.Char('<').Token()
 			from tag in Identifier
 			from attributes in Attributes
-			from gt in Parse.Char('>').Token()
+            from chars in WhiteSpace
+            from gt in Parse.Char('>')
 			from children in Parse.Ref(() => Item).Many()
 			from end in EndTag(tag)
 			select
@@ -100,7 +107,7 @@ namespace QuickXml.Speak
 		
 		public static readonly Parser<Document> Document =
 			from header in Header.Optional()
-			from root in Node.Token().End()
+			from root in Node.End()
 			select
 				new Document
 					{

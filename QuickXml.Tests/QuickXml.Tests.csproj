@@ -39,6 +39,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bugs\WhitespaceAfterHeader.cs" />
     <Compile Include="CData.cs" />
     <Compile Include="ChildTests.cs" />
     <Compile Include="Combining.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Speak\EmptyNodes.cs" />
     <Compile Include="Speak\InvalidXml.cs" />
     <Compile Include="Speak\OptionalNestedInMany.cs" />
+    <Compile Include="Speak\Spaced.cs" />
     <Compile Include="Speak\StringWithXmlHeader.cs" />
     <Compile Include="Speak\OrNestedInMany.cs" />
     <Compile Include="Speak\XmlComments.cs" />

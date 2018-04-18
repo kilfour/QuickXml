@@ -41,13 +41,13 @@ namespace QuickXml.UnderTheHood
 
 		public virtual XmlParserResult<string> GetContent(XmlParserState state)
 		{
-            //if (node.Children.Count() == 1)
-            //{
-            //    var contentNode = node.Children.SingleOrDefault() as Content;
-            //    var content = contentNode == null ? "" : contentNode.Text;
-            //    return Result.Success(content, state);    
-            //}
-		    var builder = new StringBuilder();
+            if (node.Children.Count() == 1)
+            {
+                var contentNode = node.Children.SingleOrDefault() as Content;
+                var content = contentNode == null ? "" : contentNode.Text;
+                return Result.Success(content, state);
+            }
+            var builder = new StringBuilder();
 		    foreach (var child in node.Children)
 		    {
                 builder.Append(child.AsString());

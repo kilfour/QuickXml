@@ -36,6 +36,34 @@ namespace QuickXml.Tests
 			Assert.Equal("some other text", result[1]);
 		}
 
+	    [Fact]
+	    public void Complex()
+	    {
+	        const string input =
+@"<root>
+    <first>
+        <second><third>some text 1</third></second>
+        <second><third>some text 2</third></second>
+    </first>
+    <first><second><third>some text 3</third></second></first>
+</root>";
+	        var contentParser =
+	            from second in XmlParse.Child("second")
+	            from third in second.Child("third").Content()
+	            select third;
+
+            var xmlParser =
+	            from first in XmlParse.Child("first")
+	            from content in first.Apply(contentParser.Many())
+                select content;
+
+	        var result = xmlParser.Many().Parse(input).SelectMany(x => x).ToArray();
+
+	        Assert.Equal("some text 1", result[0]);
+	        Assert.Equal("some text 2", result[1]);
+	        Assert.Equal("some text 3", result[2]);
+        }
+
         [Fact]
         public void Example()
         {
