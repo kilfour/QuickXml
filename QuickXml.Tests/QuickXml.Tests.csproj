@@ -39,7 +39,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bug.cs" />
     <Compile Include="CData.cs" />
     <Compile Include="ChildTests.cs" />
     <Compile Include="Combining.cs" />
