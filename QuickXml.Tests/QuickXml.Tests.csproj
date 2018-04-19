@@ -39,6 +39,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllByName.cs" />
     <Compile Include="Bugs\WhitespaceAfterHeader.cs" />
     <Compile Include="CData.cs" />
     <Compile Include="ChildTests.cs" />

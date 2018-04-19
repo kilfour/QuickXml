@@ -38,6 +38,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="All.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Apply.cs" />
