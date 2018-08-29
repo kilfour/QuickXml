@@ -60,6 +60,7 @@
     <Compile Include="Speak\DocumentParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XmlStructure\Header.cs" />
     <Compile Include="XmlStructure\Item.cs" />
     <Compile Include="XmlStructure\Node.cs" />
     <Compile Include="UnderTheHood\XmlParserNullNode.cs" />

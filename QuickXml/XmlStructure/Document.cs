@@ -2,6 +2,7 @@
 {
 	public class Document
 	{
+	    public Header Header;
 		public Node Root;
 	}
 }

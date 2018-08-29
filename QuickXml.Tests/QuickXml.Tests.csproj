@@ -45,6 +45,7 @@
     <Compile Include="ChildTests.cs" />
     <Compile Include="Combining.cs" />
     <Compile Include="Content.cs" />
+    <Compile Include="Speak\HeaderTests.cs" />
     <Compile Include="QuickWriteXmlSpike.cs" />
     <Compile Include="Recursion.cs" />
     <Compile Include="CovariantResult.cs" />

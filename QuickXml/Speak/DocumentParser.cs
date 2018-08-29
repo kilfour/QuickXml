@@ -28,7 +28,23 @@ namespace QuickXml.Speak
 				select new KeyValuePair<string, string>(attr, value);
 		}
 
-		private static readonly Parser<KeyValuePair<string, string>> DoubleQuotedAttribute = Attribute('"');
+	    private static Parser<string> NamedAttributeWithQuote(string name, char quote)
+	    {
+	        return
+	            from attr in Identifier.Token()
+                from eq in Parse.Char('=').Token()
+	            from lq in Parse.Char(quote)
+	            from value in Parse.AnyChar.Except(Parse.Char(quote)).Many().Text()
+	            from rq in Parse.Char(quote)
+	            select value;
+	    }
+
+        private static Parser<string> NamedAttribute(string name)
+        {
+            return NamedAttributeWithQuote(name, '"');//.Or(NamedAttributeWithQuote(name, '\''));
+        }
+
+        private static readonly Parser<KeyValuePair<string, string>> DoubleQuotedAttribute = Attribute('"');
 		private static readonly Parser<KeyValuePair<string, string>> SingleQuotedAttribute = Attribute('\'');
 
 		private static readonly Parser<Dictionary<string, string>> Attributes =
@@ -99,11 +115,19 @@ namespace QuickXml.Speak
 
         private static readonly Parser<Item> Item = CDataContent.Or<Item>(Node).XOr<Item>(Content);
 
-		private static readonly Parser<string> Header =
-			from begin in Parse.String("<?")
-			from content in Parse.AnyChar.Except(Parse.String("?>")).Many().Text()
+		private static readonly Parser<Header> Header =
+			from begin in Parse.String("<?xml")
+            from version in NamedAttribute("version")
+			from encoding in NamedAttribute("encoding").Optional()
+            from standalone in NamedAttribute("standalone").Optional()
+            from content in Parse.AnyChar.Except(Parse.String("?>")).Many().Text()
 			from end in Parse.String("?>")
-			select content;
+			select new Header
+			{
+                Version = version,
+                Encoding = encoding.GetOrDefault(),
+                StandAlone = standalone.GetOrDefault()
+            };
 		
 		public static readonly Parser<Document> Document =
 			from header in Header.Optional()
@@ -111,6 +135,7 @@ namespace QuickXml.Speak
 			select
 				new Document
 					{
+                        Header = header.GetOrDefault(),
 						Root = root
 					};
 	}
