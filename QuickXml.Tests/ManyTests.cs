@@ -20,7 +20,21 @@ namespace QuickXml.Tests
 			Assert.Equal("some other text", result[1]);
 		}
 
-		[Fact]
+	    [Fact]
+	    public void AttributeMany()
+	    {
+	        const string input = "<root><first type=\"yep\" /><first type=\"nope\" /></root>";
+
+	        var xmlParser =
+	            from val in XmlParse.Child("first").Attribute("type").Many()
+	            select val;
+
+	        var result = xmlParser.Parse(input).ToArray();
+	        Assert.Equal("yep", result[0]);
+	        Assert.Equal("nope", result[1]);
+	    }
+
+        [Fact]
 		public void GrandChildContent()
 		{
 			const string input = "<root><first><second>some text</second></first><first><second>some other text</second></first></root>";

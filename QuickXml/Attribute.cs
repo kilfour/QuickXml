@@ -12,8 +12,13 @@ namespace QuickXml
 
 		public static XmlParser<string> Attribute(this XmlParser<XmlParserNode> parser, string attributeName)
 		{
-			return state => 
-                parser(state).Value.Attribute(attributeName)(state);
+		    return state =>
+		    {
+		        var result = parser(state);
+		        if (result.Value == null)
+		            return Result.Failure<string>(state);
+		        return result.Value.Attribute(attributeName)(state);
+		    };
 		}
 	}
 }

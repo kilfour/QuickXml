@@ -2,6 +2,7 @@
 {
 	public class Content : Item
 	{
+	    public bool IsCData;
 		public string Text;
 	    public override string AsString()
 	    {

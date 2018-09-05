@@ -72,11 +72,11 @@ namespace QuickXml.Speak
             from left in Parse.String("<![CDATA[")
             from chars in Parse.AnyChar.Except(Parse.String("]]>")).Many()
             from right in Parse.String("]]>")
-            select new Content { Text = new string(chars.ToArray()) };
+            select new Content { Text = new string(chars.ToArray()), IsCData = true };
 
 		private static readonly Parser<Content> Content =
 			from chars in Parse.CharExcept('<').Many()
-			select new Content { Text = new string(chars.ToArray()) };
+			select new Content { Text = new string(chars.ToArray()), IsCData = false };
 
 		private static readonly Parser<Node> FullNode =
             from lt in Parse.Char('<').Token()

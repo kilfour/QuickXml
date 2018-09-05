@@ -8,5 +8,11 @@ namespace QuickXml
 		{
 			return state => parser(state).IfSuccessfull(result => result.Value.GetContent(state));
 		}
-	}
+
+        //TODO MOVE TO TESTINGTOOLS
+	    public static XmlParser<bool> HasCDataContent(this XmlParser<XmlParserNode> parser)
+	    {
+	        return state => parser(state).IfSuccessfull(result => result.Value.HasCDataContent(state));
+	    }
+    }
 }

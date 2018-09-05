@@ -72,5 +72,23 @@ namespace QuickXml.Tests
 			Assert.Equal("test", result[0]);
 			Assert.Equal("test again", result[1]);
 		}
-	}
+
+	    [Fact]
+	    public void Nested()
+	    {
+	        const string input = "<root><first><second>test again</second></first></root>";
+
+	        var parent =
+	            from first in XmlParse.Child("first")
+	            select first;
+
+	        var parser =
+	            from first in parent
+                from second in first.Apply(parserTwo) //first.Child("second").Content()
+                select second;
+
+	        var result = parser.Parse(input);
+	        Assert.Equal("test again", result);
+	    }
+    }
 }

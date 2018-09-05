@@ -145,7 +145,18 @@ namespace QuickXml.UnderTheHood
             return Result.Success(builder.ToString(), state);
 		}
 
-		public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
+	    public virtual XmlParserResult<bool> HasCDataContent(XmlParserState state)
+	    {
+	        if (node.Children.Count() == 1)
+	        {
+	            var contentNode = node.Children.SingleOrDefault() as Content;
+	            var content = contentNode == null ? false : contentNode.IsCData;
+	            return Result.Success(content, state);
+	        }
+	        return Result.Success(false, state);
+	    }
+
+        public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
 		{
 			return state =>
 			{
