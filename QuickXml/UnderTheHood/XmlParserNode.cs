@@ -158,7 +158,7 @@ namespace QuickXml.UnderTheHood
 
         public virtual XmlParser<T> Apply<T>(XmlParser<T> parser)
 		{
-			return state =>
+			return state => 
 			{
 			    var old = state.Current;
 			    state.Current = new XmlParserNode(node);
@@ -168,6 +168,10 @@ namespace QuickXml.UnderTheHood
 			};
 		}
 
-		
+
+	    public XmlParser<string> Content()
+	    {
+	        return GetContent;
+	    }
 	}
 }

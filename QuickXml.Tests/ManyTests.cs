@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -78,6 +79,68 @@ namespace QuickXml.Tests
 	        Assert.Equal("some text 3", result[2]);
         }
 
+	    [Fact]
+	    public void Combined()
+	    {
+	        const string input =
+@"<root>
+        <stuff>yep</stuff>
+        <second>some text 1</second>
+        <second>some text 2</second>
+</root>";
+	        var secondParser = XmlParse.Child("second").Content();
+
+	        var xmlParser =
+	            from first in XmlParse.Root()
+	            from stuff in first.Child("stuff").Content()
+	            from content in first.Apply(secondParser.Many())
+	            select new { stuff, content = content.ToArray() };
+
+
+            var result = xmlParser.Parse(input);
+
+	        Assert.Equal("yep", result.stuff);
+	        Assert.Equal("some text 1", result.content[0]);
+	        Assert.Equal("some text 2", result.content[1]);
+        }
+
+
+	    [Fact]
+	    public void Nested()
+	    {
+	        const string input =
+@"<root>
+    <first>
+        <stuff>yep</stuff>
+        <second>some text 1</second>
+        <second>some text 2</second>
+    </first>
+    <first>
+        <stuff>nope</stuff>
+        <second>some text 3</second>
+    </first>
+</root>";
+	        var secondParser = XmlParse.Child("second").Content();
+
+	        var firstParser =
+	            from first in XmlParse.Child("first")
+                from stuff in first.Child("stuff").Content()
+	            from content in first.Apply(secondParser.Many().ToArray())
+	            select new { stuff, content};
+
+	        var xmlParser = 
+                  from root in XmlParse.Root()
+                  from first in root.Apply(firstParser.Many())
+                  select first;
+
+	        var result = xmlParser.Parse(input).ToArray();
+
+            Assert.Equal("yep", result[0].stuff);
+	        Assert.Equal("some text 1", result[0].content[0]);
+	        Assert.Equal("some text 2", result[0].content[1]);
+	        Assert.Equal("nope", result[1].stuff);
+            Assert.Equal("some text 3", result[1].content[0]);
+	    }
         [Fact]
         public void Example()
         {
