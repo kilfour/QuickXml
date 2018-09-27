@@ -7,8 +7,15 @@ namespace QuickXml
     public static partial class XmlParse
 	{
         public static XmlParser<T[]> ToArray<T>(this XmlParser<IEnumerable<T>> parser)
-		{
-            return state => parser(state).IfSuccessfull(result => Result.Success(result.Value.ToArray(), state));
-		}
+        {
+            return
+                state =>
+                {
+                    var result = parser(state);
+                    if (result.WasSuccessFull)
+                        return Result.Success(result.Value.ToArray(), state);
+                    return Result.Success(new T[0], state);
+                };
+        }
 	}
 }
